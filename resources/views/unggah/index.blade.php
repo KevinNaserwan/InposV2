@@ -28,6 +28,11 @@
                                 <i class="bi bi-circle"></i><span>Unggah</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @elseif (Session('level') == 2)
                         <li>
                             <a href="/arsip">
@@ -42,6 +47,11 @@
                         <li>
                             <a href="/konfirmasimasuk">
                                 <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
                     @elseif (Session('level') == 3)
@@ -84,6 +94,11 @@
                         <li>
                             <a href="/buatsurat">
                                 <i class="bi bi-circle"></i><span>Buat Surat</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoingstaff">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
                     @endif
@@ -134,7 +149,7 @@
                                                 id="keterangan" placeholder="Masukkan Teks...." required>
                                             <div class="col mt-3">
                                                 <input class="form-check-input" type="checkbox" name="aksi"
-                                                    value="2" id="aksi">
+                                                    id="aksi" value="2">
                                                 <label class="form-check-label" for="aksi">Arsipkan</label>
                                             </div>
                                         </div>

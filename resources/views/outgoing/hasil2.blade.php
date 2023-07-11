@@ -22,18 +22,18 @@
         -moz-box-sizing: border-box;
     }
 
-
+    /*
     .book {
         display: flex;
         align-items: center;
-    }
+    } */
 
     .page {
         width: 210mm;
         min-height: 297mm;
         padding: 20mm;
-        margin: 10mm 10mm 10mm 70mm;
-        /* margin: 10mm auto; */
+        /* margin: 10mm 10mm 10mm 70mm; */
+        margin: 10mm auto;
         border: 1px #D3D3D3 solid;
         border-radius: 5px;
         background: white;
@@ -152,7 +152,7 @@
         }
     }
 
-    .button {
+    /* .button {
         position: relative;
     }
 
@@ -179,7 +179,7 @@
         list-style: none;
         text-decoration: none;
         margin-right: 30px;
-    }
+    } */
 </style>
 
 <body>
@@ -206,7 +206,7 @@
                 </div>
                 <div class="kepada">
                     <p>Kepada</p>
-                    <p class="kepentingan">{{ $user->jabatan }} {{ $isi_surat->tujuan }}</p>
+                    <p class="kepentingan">{{ $user->Jabatan }}{{ $isi_surat->tujuan }}</p>
                     <p>Sdr. {{ $user->nama }}</p>
                     <p>Nippos. {{ $user->id_pos }}</p>
                 </div>
@@ -223,25 +223,6 @@
                 </div>
             </div>
         </div>
-        @if (Session('level') == 2)
-            <div class="button1">
-                <a href="/setujuisurat/{{ $isi_surat->nomor_surat }}" id="confrim">Setujui Surat</a>
-            </div>
-        @elseif (Session('level') == 3)
-            <div class="button1">
-                <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
-            </div>
-        @elseif (Session('level') == 4)
-            <div class="button1">
-                <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
-            </div>
-        @endif
-        @if ($isi_surat->status == 2)
-            <div class="button">
-                <a href="/export-pdf/{{ $isi_surat->nomor_surat }}">Download Surat</a>
-            </div>
-        @else
-        @endif
     </div>
     @include('sweetalert::alert')
 </body>

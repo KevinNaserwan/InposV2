@@ -6,7 +6,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link collapsed " href="/dashboard">
+                <a class="nav-link " href="/dashboard">
                     <i class="bi bi-grid"></i>
                     <span>Beranda</span>
                 </a>
@@ -113,7 +113,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Menu</a></li>
-                    <li class="breadcrumb-item active">Surat Keluar</li>
+                    <li class="breadcrumb-item active">Outgoing</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -123,7 +123,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Surat Keluar</h5>
+                            <h5 class="card-title">Surat Masuk</h5>
                             {{-- <a href="{{ url('contact-add') }}" class="btn btn-primary mb-2">Add</a> --}}
 
                             <!-- Default Table -->
@@ -131,10 +131,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Nama File</th>
-                                        <th scope="col">Keterangan</th>
-                                        <th scope="col">Pengirim</th>
-                                        <th scope="col">Aksi</th>
+                                        <th scope="col">Nomor Surat</th>
+                                        <th scope="col">Perihal</th>
+                                        <th scope="col">Tujuan</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Tindakan</th>
                                     </tr>
@@ -142,54 +141,44 @@
                                 {{-- <tbody> --}}
                                 {{-- akan di isi --}}
                                 {{-- @foreach ($data as $dt)
-                        <tr>
-                          <th scope="row">{{$loop->index + 1}}</th>
-                          <td>{{$dt->name}}</td>
-                          <td>{{$dt->email}}</td>
-                          <td>{{$dt->plan}}</td>
-                          <td>{{$dt->project}}</td>
-                          <td>
-                            <a href="{{url('contact-edit')}}/{{$dt->id}}" class="btn btn-sm btn-success">Edit</a>
-                            <a onclick="return confirm('yakin hapus data?')" href="{{url('contact-delete')}}/{{$dt->id}}" class="btn btn-sm btn-danger">Delete</a>
-                          </td>
-                        </tr>
-                        @endforeach --}}
+                            <tr>
+                              <th scope="row">{{$loop->index + 1}}</th>
+                              <td>{{$dt->name}}</td>
+                              <td>{{$dt->email}}</td>
+                              <td>{{$dt->plan}}</td>
+                              <td>{{$dt->project}}</td>
+                              <td>
+                                <a href="{{url('contact-edit')}}/{{$dt->id}}" class="btn btn-sm btn-success">Edit</a>
+                                <a onclick="return confirm('yakin hapus data?')" href="{{url('contact-delete')}}/{{$dt->id}}" class="btn btn-sm btn-danger">Delete</a>
+                              </td>
+                            </tr>
+                            @endforeach --}}
                                 {{-- </tbody> --}}
                                 <tbody>
-                                    @foreach ($konfirmasistaff as $item)
+                                    @foreach ($liststaffmasuk as $item)
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $item->nomor_surat }}</td>
-                                            <td>{{ $item->nama_file }}</td>
-                                            <td>{{ $item->keterangan }}</td>
-                                            <td>
-                                                @if ($item->aksi == 0)
-                                                    <span class="badge bg-success">Disimpan</span>
-                                                @elseif ($item->aksi == 1)
-                                                    <span class="badge bg-warning">Disposisi</span>
-                                                @elseif ($item->aksi == 2)
-                                                    <span class="badge bg-primary">Diarsipkan</span>
-                                                @endif
-                                            </td>
+                                            <td>{{ $item->perihal }}</td>
+                                            <td>{{ $item->tujuan }}</td>
                                             <td>
                                                 @if ($item->status == 0)
-                                                    @if ($item->aksi == 1)
-                                                        <span class="badge bg-danger">Belum Dibaca</span>
-                                                    @else
-                                                        <span class="badge bg-success">Sudah Dibaca</span>
-                                                    @endif
+                                                    <span class="badge bg-danger">Menunggu Konfirmasi</span>
                                                 @elseif ($item->status == 1)
-                                                    <span class="badge bg-success">Sudah Dibaca</span>
+                                                    <span class="badge bg-warning">Dikonfirmasi Manager</span>
+                                                @elseif ($item->status == 2)
+                                                    <span class="badge bg-primary">Dikonfirmasi General Manager</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 <a class="btn btn-sm btn-primary"
-                                                    href="/previewkonfirmasi/{{ $item->nomor_surat }}">Buka</a>
+                                                    href="/outgoing-preview/{{ $item->nomor_surat }}">Buka</a>
                                                 {{-- <form action="/arsip/delete/{{ $item->file_pdf }}" method="POST"
                                                         style="display: inline">
                                                         @method('delete')
                                                         @csrf
-                                                        <button class="btn btn-sm btn-danger" id="delete">Delete</button>
+                                                        <button class="btn btn-sm btn-danger"
+                                                            id="delete">Delete</button>
                                                     </form> --}}
                                             </td>
                                         </tr>

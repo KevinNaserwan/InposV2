@@ -10,8 +10,11 @@ use App\Models\konfirmasi;
 use App\Models\outgoing;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class InposController extends Controller
 {
@@ -191,14 +194,32 @@ class InposController extends Controller
 
     public function exportpdf($nomor_surat)
     {
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->setBasePath(public_path());
+        $dompdf = new Dompdf();
         $isi_surat = outgoing::where('nomor_surat', $nomor_surat)->first();
-        $users = User::where('divisi', $isi_surat->divisi)
+        $user = User::where('divisi', $isi_surat->divisi)
             ->where('level', 3)
             ->first();
-        $pdf = Pdf::loadView('outgoing.hasil', ['user' => $users, 'isi_surat' => $isi_surat])->setPaper('a4', 'potrait');
-        set_time_limit(300);
-        return $pdf->download('invoice.pdf');
+        $html = View::make('outgoing.hasil2', compact('user', 'isi_surat'))->render();
+        // $options = new Options();
+        // $options->set('isRemoteEnabled', true); // Aktifkan dukungan aset gambar remote
+        // $dompdf->setOptions($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        return $dompdf->stream();
+        // $pdf = Pdf::loadView('outgoing.hasil', ['user' => $users, 'isi_surat' => $isi_surat])->setPaper('a4', 'potrait');
+        // return $pdf->download('invoice.pdf');
+    }
+
+    public function kirimsurat($nomor_surat)
+    {
+        outgoing::where('nomor_surat', $nomor_surat)->update(['status' => 1]);
+        return redirect()->back()->with('success', 'Surat Berhasil Dikirim');
+    }
+
+    public function setujuisurat($nomor_surat)
+    {
+        outgoing::where('nomor_surat', $nomor_surat)->update(['status' => 2]);
+        return redirect()->back()->with('success', 'Surat sudah disetujui');
     }
 }

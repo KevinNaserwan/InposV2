@@ -86,11 +86,14 @@ Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginpr
     //Route outgoing
     Route::get('/buatsurat', [RouteController::class, 'outgoing']);
     Route::get('/outgoing-masuk', [RouteController::class, 'outgoing']);
+    Route::get('/outgoingstaff', [RouteController::class, 'outgoingstaff']);
     Route::get('/outgoing-preview/{nomor_surat}', [RouteController::class, 'hasil']);
     Route::post('/outgoingprocess', [InposController::class, 'outgoing']);
 
     //Route Download outgoing
     Route::get('/export-pdf/{nomor_surat}',[InposController::class,'exportpdf']);
+    Route::get('/kirimsurat/{nomor_surat}',[InposController::class,'kirimsurat']);
+    Route::get('/setujuisurat/{nomor_surat}',[InposController::class,'setujuisurat']);
 // });
 
 

@@ -203,10 +203,24 @@ class RouteController extends Controller
     {
         if ($request->keyword) {
             $listsuratmasuk = outgoing::search($request->keyword)->get();
+            $listsuratmasukkepala = outgoing::search($request->keyword)->get();
+            $listsuratmasukadmin = outgoing::search($request->keyword)->get();
         } else {
             $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->get();
+            $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->get();
+            $listsuratmasukadmin = outgoing::all();
         }
-        return view('outgoing.main', ['listmasuk' => $listsuratmasuk]);
+        return view('outgoing.main', ['listmasuk' => $listsuratmasuk, 'listkepalamasuk' => $listsuratmasukkepala, 'listmasukadmin' => $listsuratmasukadmin]);
+    }
+
+      public function outgoingstaff(Request $request)
+    {
+        if ($request->keyword) {
+            $listsuratmasukstaff = outgoing::search($request->keyword)->get();
+        } else {
+            $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->get();
+        }
+        return view('outgoing.outgoingstaff', ['liststaffmasuk' => $listsuratmasukstaff]);
     }
 
     public function hasil($nomor_surat)
