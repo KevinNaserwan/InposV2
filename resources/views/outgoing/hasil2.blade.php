@@ -206,7 +206,7 @@
                 </div>
                 <div class="kepada">
                     <p>Kepada</p>
-                    <p class="kepentingan">{{ $user->Jabatan }}{{ $isi_surat->tujuan }}</p>
+                    <p class="kepentingan">{{ $user->jabatan }}{{ $isi_surat->tujuan }}</p>
                     <p>Sdr. {{ $user->nama }}</p>
                     <p>Nippos. {{ $user->id_pos }}</p>
                 </div>

@@ -14,15 +14,15 @@ class RouteController extends Controller
 {
     public function dashboard()
     {
-        $arsip = Files::all()->take(10);
+        $arsip = Files::paginate(10);
         $suratkepala = Files::where('aksi', 0)->count();
-        $suratkepalatoday = Files::whereDate('tanggal', now()->format('Y-m-d'))->take(10)->get();
+        $suratkepalatoday = Files::whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $suratmanagertoday = Files::whereHas('disposisi', function ($query) {
             $query->where('divisi', Session('divisi'));
-        })->whereDate('tanggal', now()->format('Y-m-d'))->take(10)->get();
+        })->whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $suratstafftoday = Files::whereHas('disposisiStaff', function ($query) {
             $query->where('id_pos', Session('id_pos'))->where('divisi', Session('divisi'));
-        })->whereDate('tanggal', now()->format('Y-m-d'))->take(10)->get();
+        })->whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $disposisikepala = Files::where('aksi', 1)->count();
         $files = Files::whereDate('tanggal', now()->format('Y-m-d'))->take(10)->get();
         $menunggukepala = Files::whereHas('disposisi', function ($query) {
@@ -91,15 +91,15 @@ class RouteController extends Controller
                 ->get();
             $filesDivisi3 = Files::search($request->keyword)->get();
         } else {
-            $arsip = Files::all();
+            $arsip = Files::paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
             $disposisiFileskepala = Disposisi::wherein('status', [0, 1])->pluck('nomor_surat');
             $konfirmasiFiles = konfirmasi::pluck('nomor_surat');
             $filekeluarkepala = Files::whereIn('nomor_surat', $disposisiFileskepala)
                 ->orWhereIn('nomor_surat', $konfirmasiFiles)
                 ->wherein('aksi', [1, 2])
-                ->get();
-            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->get();
+                ->paginate(10);
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
             // dd($disposisiFileskepala );
         }
         return view("unggah.index", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'keluarkepala' => $filekeluarkepala]);
@@ -110,7 +110,7 @@ class RouteController extends Controller
         $arsip = Files::all();
         $nomor = Files::where('nomor_surat', $nomor_surat)->first();
         $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
-        $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->get();
+        $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
         return view("unggah.index", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'nomor' => $nomor]);
     }
 
@@ -122,10 +122,10 @@ class RouteController extends Controller
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
             $filesDivisi3 = Files::search($request->keyword)->get();
         } else {
-            $arsip = Files::all();
+            $arsip = Files::paginate(10);
             $nomor = Files::where('nomor_surat', $nomor_surat)->first();
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
-            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->get();
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
         }
         return view("unggah.konfirmasi", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'nomor' => $nomor]);
     }
@@ -133,7 +133,7 @@ class RouteController extends Controller
     function disposisi($nomor_surat)
     {
         $nomor = Files::where('nomor_surat', $nomor_surat)->first();
-        $staff = User::where('divisi', Session('divisi'))->where('level', 4)->get();
+        $staff = User::where('divisi', Session('divisi'))->where('level', 4)->paginate(10);
         return view("disposisi.index", ['nomor' => $nomor, 'staff' => $staff]);
     }
 
@@ -147,7 +147,7 @@ class RouteController extends Controller
                 ->join('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
                 ->where('disposisistaff.id_pos', Session('id_pos'))
                 ->select('file.*')
-                ->get();
+                ->paginate(10);
         }
         return view('konfirmasi.index', ['konfirmasistaff' => $files]);
     }
@@ -162,7 +162,7 @@ class RouteController extends Controller
                 ->join('disposisi', 'konfirmasi.nomor_surat', '=', 'disposisi.nomor_surat')
                 ->where('disposisi.divisi', Session('divisi'))
                 ->select('file.*')
-                ->get();
+                ->paginate(10);
         }
         return view('konfirmasi.manager', ['konfirmasistaff' => $files]);
     }
@@ -178,7 +178,7 @@ class RouteController extends Controller
                 ->join('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
                 ->where('disposisistaff.divisi', Session('divisi'))
                 ->select('file.*')
-                ->get();
+                ->paginate(10);
             $pengirim = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
                 ->leftJoin('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
                 ->leftJoin('user', function ($join) {
@@ -194,7 +194,7 @@ class RouteController extends Controller
             $fileskonfirmasikepala = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
                 ->where('file.aksi', 2)
                 ->select('file.*')
-                ->get();
+                ->paginate(10);
         }
         return view('konfirmasi.index', ['konfirmasimanager' => $files, 'konfirmasikepala' => $fileskonfirmasikepala, 'pengirim' => $pengirim]);
     }
@@ -206,9 +206,9 @@ class RouteController extends Controller
             $listsuratmasukkepala = outgoing::search($request->keyword)->get();
             $listsuratmasukadmin = outgoing::search($request->keyword)->get();
         } else {
-            $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->get();
-            $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->get();
-            $listsuratmasukadmin = outgoing::all();
+            $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->paginate(10);
+            $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->paginate(10);
+            $listsuratmasukadmin = outgoing::paginate(10);
         }
         return view('outgoing.main', ['listmasuk' => $listsuratmasuk, 'listkepalamasuk' => $listsuratmasukkepala, 'listmasukadmin' => $listsuratmasukadmin]);
     }
@@ -218,7 +218,7 @@ class RouteController extends Controller
         if ($request->keyword) {
             $listsuratmasukstaff = outgoing::search($request->keyword)->get();
         } else {
-            $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->get();
+            $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->paginate(10);
         }
         return view('outgoing.outgoingstaff', ['liststaffmasuk' => $listsuratmasukstaff]);
     }

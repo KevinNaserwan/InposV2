@@ -156,9 +156,9 @@
                         @endforeach --}}
                                     {{-- </tbody> --}}
                                     <tbody>
-                                        @foreach ($konfirmasikepala as $item)
+                                        @foreach ($konfirmasikepala as $index => $item)
                                             <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <th scope="row">{{ $index + $konfirmasikepala->firstItem() }}</th>
                                                 <td>{{ $item->file_pdf }}</td>
                                                 <td>{{ $item->keterangan }}</td>
                                                 <td>{{ $pengirim->nama }}</td>
@@ -185,6 +185,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $konfirmasikepala->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>
@@ -242,9 +243,9 @@
                         @endforeach --}}
                                     {{-- </tbody> --}}
                                     <tbody>
-                                        @foreach ($konfirmasimanager as $item)
+                                        @foreach ($konfirmasimanager as $index => $item)
                                             <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <th scope="row">{{ $index + $konfirmasimanager->firstItem() }}</th>
                                                 <td>{{ $item->nomor_surat }}</td>
                                                 <td>{{ $item->nama_file }}</td>
                                                 <td>{{ $item->keterangan }}</td>
@@ -282,6 +283,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $konfirmasimanager->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>
@@ -339,9 +341,9 @@
                         @endforeach --}}
                                     {{-- </tbody> --}}
                                     <tbody>
-                                        @foreach ($konfirmasistaff as $item)
+                                        @foreach ($konfirmasistaff as $index => $item)
                                             <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <th scope="row">{{ $index + $konfirmasistaff->firstItem() }}</th>
                                                 <td>{{ $item->nomor_surat }}</td>
                                                 <td>{{ $item->nama_file }}</td>
                                                 <td>{{ $item->keterangan }}</td>
@@ -379,6 +381,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $konfirmasistaff->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>

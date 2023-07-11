@@ -304,9 +304,9 @@
         {{-- </tbody> --}}
         <tbody>
             @if (Session('level') == 1)
-                @foreach ($arsip as $item)
+                @foreach ($arsip as $index => $item)
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
+                        <th scope="row">{{ $index + $arsip->firstItem() }}</th>
                         <td>{{ $item->file_pdf }}</td>
                         <td>{{ $item->keterangan }}</td>
                         <td>{{ $item->posisi['jabatan'] }}</td>
@@ -321,7 +321,7 @@
                         </td>
                         <td>
                             @if ($item->status == 0)
-                                @if ($item->aksi == 1 || $item->aksi == 2 )
+                                @if ($item->aksi == 1 || $item->aksi == 2)
                                     <span class="badge bg-success">Sudah Dibaca</span>
                                 @else
                                     <span class="badge bg-danger">Belum Dibaca</span>
@@ -336,38 +336,40 @@
                             <form action="/arsip/delete/{{ $item->file_pdf }}" method="POST" style="display: inline">
                                 @method('delete')
                                 @csrf
-                                <button class="btn btn-sm btn-danger" confirmDelete() data-confirm-delete="true" id="delete">Delete</button>
+                                <button class="btn btn-sm btn-danger" confirmDelete() data-confirm-delete="true"
+                                    id="delete">Delete</button>
                             </form>
                             {{-- <a href="{{ route('users.destroy', $user->file_pdf) }}" class="btn btn-danger" data-confirm-delete="true">Delete</a> --}}
                         </td>
                     </tr>
                 @endforeach
             @elseif (Session('level') == 2)
-                @foreach ($kepalamasuk as $item)
-                        <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $item->file_pdf }}</td>
-                            <td>{{ $item->keterangan }}</td>
-                            <td>{{ $item->posisi['jabatan'] }}</td>
-                            <td>
-                                @if ($item->aksi == 0)
-                                    <span class="badge bg-success">Disimpan</span>
-                                @elseif ($item->aksi == 1)
-                                    <span class="badge bg-warning">Disposisi</span>
-                                @elseif ($item->aksi == 2)
-                                    <span class="badge bg-primary">Diarsipkan</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a class="btn btn-sm btn-primary" href="/preview/{{ $item->nama_file }}" id="delete">Buka</a>
-                            </td>
-                        </tr>
+                @foreach ($kepalamasuk as $index => $item)
+                    <tr>
+                        <th scope="row">{{ $index + $kepalamasuk->firstItem() }}</th>
+                        <td>{{ $item->file_pdf }}</td>
+                        <td>{{ $item->keterangan }}</td>
+                        <td>{{ $item->posisi['jabatan'] }}</td>
+                        <td>
+                            @if ($item->aksi == 0)
+                                <span class="badge bg-success">Disimpan</span>
+                            @elseif ($item->aksi == 1)
+                                <span class="badge bg-warning">Disposisi</span>
+                            @elseif ($item->aksi == 2)
+                                <span class="badge bg-primary">Diarsipkan</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="/preview/{{ $item->nama_file }}"
+                                id="delete">Buka</a>
+                        </td>
+                    </tr>
                 @endforeach
             @elseif (Session('level') == 3)
-                @foreach ($managermasuk as $item)
+                @foreach ($managermasuk as $index => $item)
                     {{-- @if ($item->aksi == 0) --}}
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
+                        <th scope="row">{{ $index + $managermasuk->firstItem() }}</th>
                         <td>{{ $item->file_pdf }}</td>
                         <td>{{ $item->keterangan }}</td>
                         <td>General Manager</td>
@@ -387,10 +389,10 @@
                     {{-- @endif --}}
                 @endforeach
             @elseif (Session('level') == 4)
-                @foreach ($staffmasuk as $item)
+                @foreach ($staffmasuk as $index => $item)
                     {{-- @if ($item->aksi == 0) --}}
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
+                        <th scope="row">{{ $index + $staffmasuk->firstItem() }}</th>
                         <td>{{ $item->file_pdf }}</td>
                         <td>{{ $item->keterangan }}</td>
                         <td>General Manager</td>
@@ -412,6 +414,15 @@
             @endif
         </tbody>
         </table>
+        @if (Session('level') == 1)
+            {{ $arsip->links() }}
+        @elseif (Session('level') == 2)
+            {{ $kepalamasuk->links() }}
+        @elseif (Session('level') == 3)
+            {{ $managermasuk->links() }}
+        @elseif (Session('level') == 4)
+            {{ $staffmasuk->links() }}
+        @endif
         <!-- End Default Table Example -->
         </div>
         </div>

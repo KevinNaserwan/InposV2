@@ -225,9 +225,9 @@
                             @endforeach --}}
                                     {{-- </tbody> --}}
                                     <tbody>
-                                        @foreach ($keluarkepala as $item)
+                                        @foreach ($keluarkepala as $index => $item)
                                             <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <th scope="row">{{ $index + $keluarkepala->firstItem() }}</th>
                                                 <td>{{ $item->file_pdf }}</td>
                                                 <td>{{ $item->keterangan }}</td>
                                                 <td>{{ $item->posisi['jabatan'] }}</td>
@@ -266,6 +266,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $keluarkepala->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>
@@ -323,9 +324,9 @@
                             @endforeach --}}
                                     {{-- </tbody> --}}
                                     <tbody>
-                                        @foreach ($disposisimanager as $item)
+                                        @foreach ($disposisimanager as $index => $item)
                                             <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <th scope="row">{{ $index + $disposisimanager->firstItem() }}</th>
                                                 <td>{{ $item->file_pdf }}</td>
                                                 <td>{{ $item->keterangan }}</td>
                                                 <td>{{ $item->posisi['jabatan'] }}</td>
@@ -368,6 +369,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $disposisimanager->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>

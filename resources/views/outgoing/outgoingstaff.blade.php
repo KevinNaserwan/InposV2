@@ -155,9 +155,9 @@
                             @endforeach --}}
                                 {{-- </tbody> --}}
                                 <tbody>
-                                    @foreach ($liststaffmasuk as $item)
+                                    @foreach ($liststaffmasuk as $index => $item)
                                         <tr>
-                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <th scope="row">{{ $index + $liststaffmasuk->firstItem() }}</th>
                                             <td>{{ $item->nomor_surat }}</td>
                                             <td>{{ $item->perihal }}</td>
                                             <td>{{ $item->tujuan }}</td>
@@ -185,6 +185,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $liststaffmasuk->links() }}
                             <!-- End Default Table Example -->
                         </div>
                     </div>

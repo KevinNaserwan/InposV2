@@ -11,7 +11,8 @@ class Files extends Model
     use HasFactory, Searchable;
     protected $table = 'file';
 
-    // public $primaryKey = 'nomor_surat';
+    // protected $primaryKey = 'nomor_surat';
+
     protected $fillable = ['nomor_surat', 'nama_file', 'tanggal', 'id_pos', 'file_pdf', 'aksi', 'status', 'keterangan'];
     public $timestamps = false;
 
@@ -39,5 +40,4 @@ class Files extends Model
             'nama_file' => $this->nama_file
         ];
     }
-
 }

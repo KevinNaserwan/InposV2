@@ -11,7 +11,8 @@ class outgoing extends Model
     use HasFactory, Searchable;
 
     protected $table = 'outgoing';
-    // public $primaryKey = 'nomor_surat';
+    // protected $primaryKey = 'nomor_surat';
+
     protected $fillable = ['nomor_surat', 'tanggal', 'id_pos', 'level', 'divisi', 'perihal', 'isi_surat', 'tujuan', 'lampiran','status'];
     public $timestamps = false;
 

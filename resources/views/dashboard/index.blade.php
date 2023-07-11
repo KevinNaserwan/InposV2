@@ -175,9 +175,9 @@
                                                             Data belum ada</td>
                                                     </tr>
                                                 @endif
-                                                @foreach ($files as $item)
+                                                @foreach ($files as $index => $item)
                                                     <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</th>
+                                                        <th scope="row">{{ $index + $files->firstItem() }}</th>
                                                         <td>{{ $item->file_pdf }}</td>
                                                         <td>{{ $item->keterangan }}</td>
                                                         <td>{{ $item->posisi['jabatan'] }}</td>
@@ -205,6 +205,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{ $files->links() }}
 
                                     </div>
 
@@ -345,9 +346,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($suratkepalatoday as $item)
+                                                @foreach ($suratkepalatoday as $index => $item)
                                                     <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</th>
+                                                        <th scope="row">{{ $index + $suratkepalatoday->firstItem() }}
+                                                        </th>
                                                         <td>{{ $item->file_pdf }}</td>
                                                         <td>{{ $item->keterangan }}</td>
                                                         <td>{{ $item->posisi['jabatan'] }}</td>
@@ -364,6 +366,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{ $suratkepalatoday->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -433,7 +436,7 @@
                                                 <i class="bi bi-people"></i>
                                             </div>
                                             <div class="ps-3">
-                                                <h6>{{$disposisimanager}}</h6>
+                                                <h6>{{ $disposisimanager }}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -502,9 +505,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($suratmanagertoday as $item)
+                                                @foreach ($suratmanagertoday as $index => $item)
                                                     <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</th>
+                                                        <th scope="row">{{ $index + $suratmanagertoday->firstItem() }}
+                                                        </th>
                                                         <td>{{ $item->file_pdf }}</td>
                                                         <td>{{ $item->keterangan }}</td>
                                                         <td>{{ $item->posisi['jabatan'] }}</td>
@@ -521,6 +525,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{ $suratmanagertoday->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -615,9 +620,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($suratstafftoday as $item)
+                                                @foreach ($suratstafftoday as $index => $item)
                                                     <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</th>
+                                                        <th scope="row">{{ $Index + $suratstafftoday->firstItem() }}
+                                                        </th>
                                                         <td>{{ $item->file_pdf }}</td>
                                                         <td>{{ $item->keterangan }}</td>
                                                         <td>{{ $item->posisi['jabatan'] }}</td>
@@ -634,6 +640,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{ $suratstafftoday->links() }}
                                     </div>
                                 </div>
                             </div>
