@@ -21,6 +21,11 @@ class outgoing extends Model
         return $this->belongsTo(User::class, 'id_pos', 'id_pos');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_pos', 'id_pos');
+    }
+
     public function toSearchableArray()
     {
         return [

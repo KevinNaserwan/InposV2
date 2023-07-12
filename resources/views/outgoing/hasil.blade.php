@@ -224,17 +224,17 @@
             </div>
         </div>
         @if (Session('level') == 2)
-            <div class="button1">
-                <a href="/setujuisurat/{{ $isi_surat->nomor_surat }}" id="confrim">Setujui Surat</a>
-            </div>
+            @if ($isi_surat->status == 2)
+            @elseif ($isi_surat->status == 1)
+                <div class="button1">
+                    <a href="/setujuisurat/{{ $isi_surat->nomor_surat }}" id="confrim">Setujui Surat</a>
+                </div>
+            @endif
         @elseif (Session('level') == 3)
             <div class="button1">
                 <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
             </div>
         @elseif (Session('level') == 4)
-            <div class="button1">
-                <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
-            </div>
         @endif
         @if ($isi_surat->status == 2)
             <div class="button">

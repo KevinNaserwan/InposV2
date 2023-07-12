@@ -158,10 +158,9 @@ class InposController extends Controller
     public function outgoing(Request $request)
     {
         $request->validate([
-            'lampiran' => 'required|mimes:jpeg,png,jpg,pdf,gif',
+            'lampiran' => 'mimes:jpeg,png,jpg,pdf,gif',
             'level' => 'required'
         ], [
-            'lampiran.required' => 'File wajib diisi',
             'level' => 'Arah tujuan surat wajib diisi',
             'lampiran.mimes' => 'File hanya diperbolehkan Berjenis PDF,jpeg,png,jpg,pdf,gif'
         ]);
@@ -170,8 +169,12 @@ class InposController extends Controller
         $tanggal = date('Y-m-d H:i:s');
         $lampiran = Helper::IDGenerator(new outgoing, 'lampiran', 3, date("dm", strtotime($tanggal)));
         $foto_file = $request->file('lampiran');
-        $foto_nama = $lampiran . "." . $request->file('lampiran')->getClientOriginalExtension();
-        $foto_file->move(public_path('outgoing/lampiran'), $foto_nama);
+        if ($foto_file) {
+            $foto_nama = $lampiran . "." . $request->file('lampiran')->getClientOriginalExtension();
+            $foto_file->move(public_path('outgoing/lampiran'), $foto_nama);
+        } else {
+            $foto_nama = null;
+        }
         $isi_surat = $request->input('isi_surat');
         $isi_surat2 = nl2br($isi_surat);
         $data = [

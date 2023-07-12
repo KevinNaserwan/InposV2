@@ -24,7 +24,7 @@ class RouteController extends Controller
             $query->where('id_pos', Session('id_pos'))->where('divisi', Session('divisi'));
         })->whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $disposisikepala = Files::where('aksi', 1)->count();
-        $files = Files::whereDate('tanggal', now()->format('Y-m-d'))->take(10)->get();
+        $files = Files::whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $menunggukepala = Files::whereHas('disposisi', function ($query) {
             $query->where('status', 0);
         })->count();
@@ -209,8 +209,11 @@ class RouteController extends Controller
             $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->paginate(10);
             $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->paginate(10);
             $listsuratmasukadmin = outgoing::paginate(10);
+            $jabatan = outgoing::join('user', 'outgoing.id_pos', '=', 'user.id_pos')
+            ->select('outgoing.*', 'user.jabatan')
+            ->first();
         }
-        return view('outgoing.main', ['listmasuk' => $listsuratmasuk, 'listkepalamasuk' => $listsuratmasukkepala, 'listmasukadmin' => $listsuratmasukadmin]);
+        return view('outgoing.main', ['listmasuk' => $listsuratmasuk, 'listkepalamasuk' => $listsuratmasukkepala, 'listmasukadmin' => $listsuratmasukadmin, 'jabatan' => $jabatan]);
     }
 
       public function outgoingstaff(Request $request)

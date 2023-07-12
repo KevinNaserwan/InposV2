@@ -258,14 +258,20 @@
                                                 <th scope="row">{{ $index + $listmasuk->firstItem() }}</th>
                                                 <td>{{ $item->nomor_surat }}</td>
                                                 <td>{{ $item->perihal }}</td>
-                                                <td>{{ $item->tujuan }}</td>
+                                                <td>
+                                                    @if (empty($item->tujuan))
+                                                        {{ $jabatan->jabatan }}
+                                                    @else
+                                                        {{ $item->tujuan }}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if ($item->status == 0)
-                                                        <span class="badge bg-danger">Menunggu Konfirmasi</span>
+                                                        <span class="badge bg-danger">Belum Disetujui</span>
                                                     @elseif ($item->status == 1)
-                                                        <span class="badge bg-warning">Dikonfirmasi Manager</span>
+                                                        <span class="badge bg-warning">Sedang Diproses</span>
                                                     @elseif ($item->status == 2)
-                                                        <span class="badge bg-primary">Dikonfirmasi General Manager</span>
+                                                        <span class="badge bg-primary">Sudah Disetujui</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -345,14 +351,20 @@
                                                 <th scope="row">{{ $index + $listkepalamasuk->firstItem() }}</th>
                                                 <td>{{ $item->nomor_surat }}</td>
                                                 <td>{{ $item->perihal }}</td>
-                                                <td>{{ $item->tujuan }}</td>
+                                                <td>
+                                                    @if (empty($item->tujuan))
+                                                        {{ $jabatan->jabatan }}
+                                                    @else
+                                                        {{ $item->tujuan }}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if ($item->status == 0)
-                                                        <span class="badge bg-danger">Menunggu Konfirmasi</span>
+                                                        <span class="badge bg-danger">Belum Disetujui</span>
                                                     @elseif ($item->status == 1)
-                                                        <span class="badge bg-warning">Dikonfirmasi Manager</span>
+                                                        <span class="badge bg-warning">Sedang Diproses</span>
                                                     @elseif ($item->status == 2)
-                                                        <span class="badge bg-primary">Dikonfirmasi General Manager</span>
+                                                        <span class="badge bg-primary">Sudah Disetujui</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -432,14 +444,20 @@
                                                 <th scope="row">{{ $index + $listmasukadmin->firstItem() }}</th>
                                                 <td>{{ $item->nomor_surat }}</td>
                                                 <td>{{ $item->perihal }}</td>
-                                                <td>{{ $item->tujuan }}</td>
+                                                <td>
+                                                    @if (empty($item->tujuan))
+                                                        {{ $jabatan->jabatan }}
+                                                    @else
+                                                        {{ $item->tujuan }}
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @if ($item->status == 0)
-                                                        <span class="badge bg-danger">Menunggu Konfirmasi</span>
+                                                        <span class="badge bg-danger">Belum Disetujui</span>
                                                     @elseif ($item->status == 1)
-                                                        <span class="badge bg-warning">Dikonfirmasi Manager</span>
+                                                        <span class="badge bg-warning">Sedang Diproses</span>
                                                     @elseif ($item->status == 2)
-                                                        <span class="badge bg-primary">Dikonfirmasi General Manager</span>
+                                                        <span class="badge bg-primary">Sudah Disetujui</span>
                                                     @endif
                                                 </td>
                                                 <td>
