@@ -56,7 +56,7 @@
 
         <div class="search-bar">
             <form class="search-form d-flex align-items-center" method="get" action="">
-                <input type="text" name="keyword" placeholder="Search" title="Enter search keyword">
+                <input type="search" name="search" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
         </div><!-- End Search Bar -->

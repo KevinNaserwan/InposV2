@@ -622,7 +622,7 @@
                                             <tbody>
                                                 @foreach ($suratstafftoday as $index => $item)
                                                     <tr>
-                                                        <th scope="row">{{ $Index + $suratstafftoday->firstItem() }}
+                                                        <th scope="row">{{ $index + $suratstafftoday->firstItem() }}
                                                         </th>
                                                         <td>{{ $item->file_pdf }}</td>
                                                         <td>{{ $item->keterangan }}</td>

@@ -170,8 +170,8 @@
                             <div class="row mb-3">
                                 <label for="inputText" class="col-sm-2 col-form-label">Perihal</label>
                                 <div class="col">
-                                    <input class="form-check-input" type="checkbox" name="perihal[]" value="Segera tanggapi"
-                                        id="perihal">
+                                    <input class="form-check-input" type="checkbox" name="perihal[]"
+                                        value="Segera tanggapi" id="perihal">
                                     <label class="form-check-label" for="Segera Tanggapi ">Segera tanggapi</label>
                                     <div class="row">
                                         <div class="col">
@@ -199,7 +199,8 @@
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        name="perihal[]" value="true" id="perihal">
+                                                                        name="perihal[]" value="Konsepkan surat ..."
+                                                                        id="perihal">
                                                                     <label class="form-check-label"
                                                                         for="rememberMe">Konsepkan surat ...<label>
                                                                 </div>
@@ -212,25 +213,32 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <input class="form-check-input" type="checkbox" name="perihal[]" value="true"
-                                        id="perihal">
+                                    <input class="form-check-input" type="checkbox" name="perihal[]"
+                                        value="Proses Lebih Lanjut" id="perihal">
                                     <label class="form-check-label" for="rememberMe">Proses Lebih Lanjut</label>
                                     <div class="row">
                                         <div class="col">
                                             <input class="form-check-input" type="checkbox" name="perihal[]"
-                                                value="true" id="perihal">
+                                                value="Koordinasikan dengan
+                                                ..."
+                                                id="perihal">
                                             <label class="form-check-label" for="rememberMe">Koordinasikan dengan
                                                 ...</label>
                                             <div class="row">
                                                 <div class="col">
                                                     <input class="form-check-input" type="checkbox" name="perihal[]"
-                                                        value="true" id="perihal">
+                                                        value="Buat
+                                                        Analisa/Kajian"
+                                                        id="perihal">
                                                     <label class="form-check-label" for="rememberMe">Buat
                                                         Analisa/Kajian</label>
                                                     <div class="row">
                                                         <div class="col">
                                                             <input class="form-check-input" type="checkbox"
-                                                                name="perihal[]" value="true" id="perihal">
+                                                                name="perihal[]"
+                                                                value="Buat
+                                                                surat usulan"
+                                                                id="perihal">
                                                             <label class="form-check-label" for="rememberMe">Buat
                                                                 surat usulan</label>
                                                             <div class="row">
@@ -249,14 +257,17 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <input class="form-check-input" type="checkbox" name="perihal" value="true"
-                                        id="perihal">
+                                    <input class="form-check-input" type="checkbox" name="perihal"
+                                        value="Teruskan ke
+                                        ..." id="perihal">
                                     <label class="form-check-label" for="rememberMe">Teruskan ke
                                         ...</label>
                                     <div class="row">
                                         <div class="col">
                                             <input class="form-check-input" type="checkbox" name="perihal"
-                                                value="true" id="perihal">
+                                                value="Laporkan
+                                                ke ..."
+                                                id="perihal">
                                             <label class="form-check-label" for="rememberMe">Laporkan
                                                 ke ...<label>
                                         </div>

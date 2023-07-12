@@ -35,13 +35,18 @@ class InposController extends Controller
         $foto_file = $request->file('file_pdf');
         $foto_nama = $nama_file . "." . $request->file('file_pdf')->getClientOriginalExtension();
         $foto_file->move(public_path('file-pdf'), $foto_nama);
+        if ($request->input('aksi') == true) {
+            $aksi = 2;
+        } else {
+            $aksi = 0;
+        }
         $data = [
             'nomor_surat' => $nomor_surat,
             'nama_file' => $nama_file,
             'tanggal' => $tanggal,
             'id_pos' => Session('id_pos'),
             'file_pdf' => $foto_nama,
-            'aksi' => $request->input('aksi') || 0,
+            'aksi' => $aksi,
             'status' => 0,
             'keterangan' => $request->input('keterangan')
         ];

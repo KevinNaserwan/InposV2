@@ -82,14 +82,16 @@ class RouteController extends Controller
 
     public function unggah(Request $request)
     {
-        if ($request->keyword) {
+        if ($request->has('search')) {
+            $arsip = Files::where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
             $disposisiFileskepala = Disposisi::wherein('status', [0, 1])->pluck('nomor_surat');
             $konfirmasiFiles = konfirmasi::pluck('nomor_surat');
-            $arsip = Files::search($request->keyword)->get();
-            $filekeluarkepala = Files::search($request->keyword)
-                ->get();
-            $filesDivisi3 = Files::search($request->keyword)->get();
+            $filekeluarkepala = Files::whereIn('nomor_surat', $disposisiFileskepala)
+                ->orWhereIn('nomor_surat', $konfirmasiFiles)
+                ->wherein('aksi', [1, 2])
+                ->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $arsip = Files::paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
@@ -105,22 +107,29 @@ class RouteController extends Controller
         return view("unggah.index", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'keluarkepala' => $filekeluarkepala]);
     }
 
-    public function konfirmasi($nomor_surat)
+    public function konfirmasi(Request $request, $nomor_surat)
     {
-        $arsip = Files::all();
-        $nomor = Files::where('nomor_surat', $nomor_surat)->first();
-        $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
-        $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
+        if ($request->has('search')) {
+            $arsip = Files::where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $nomor = Files::where('nomor_surat', $nomor_surat)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->first();
+            $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+        } else {
+            $arsip = Files::all();
+            $nomor = Files::where('nomor_surat', $nomor_surat)->first();
+            $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
+        }
         return view("unggah.index", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'nomor' => $nomor]);
     }
 
     public function konfirmasimanager(Request $request, $nomor_surat)
     {
-        if ($request->keyword) {
-            $arsip = Files::search($request->keyword)->get();
-            $nomor = Files::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $arsip = Files::where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $nomor = Files::where('nomor_surat', $nomor_surat)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->first();
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
-            $filesDivisi3 = Files::search($request->keyword)->get();
+            $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $arsip = Files::paginate(10);
             $nomor = Files::where('nomor_surat', $nomor_surat)->first();
@@ -139,8 +148,12 @@ class RouteController extends Controller
 
     function konfirmasikeluar(Request $request)
     {
-        if ($request->keyword) {
-            $files = Files::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+                ->join('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
+                ->where('disposisistaff.id_pos', Session('id_pos'))
+                ->select('file.*')->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->paginate(10);
         } else {
             // $id_pos = Disposisistaff::where('id_pos', Session('id_pos'))->value('id_pos');
             $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
@@ -154,8 +167,12 @@ class RouteController extends Controller
 
     function konfirmasimanagerkeluar(Request $request)
     {
-        if ($request->keyword) {
-            $files = Files::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+                ->join('disposisi', 'konfirmasi.nomor_surat', '=', 'disposisi.nomor_surat')
+                ->where('disposisi.divisi', Session('divisi'))
+                ->select('file.*')->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->paginate(10);
         } else {
             // $id_pos = Disposisistaff::where('id_pos', Session('id_pos'))->value('id_pos');
             $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
@@ -169,10 +186,28 @@ class RouteController extends Controller
 
     public function konfirmasimasuk(Request $request)
     {
-        if ($request->keyword) {
-            $files = Files::search($request->keyword)->get();
-            $pengirim = Files::search($request->keyword)->get();
-            $fileskonfirmasikepala = Files::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+                ->join('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
+                ->where('disposisistaff.divisi', Session('divisi'))
+                ->select('file.*')->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->paginate(10);
+            $pengirim = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+                ->leftJoin('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
+                ->leftJoin('user', function ($join) {
+                    $join->on('disposisistaff.id_pos', '=', 'user.id_pos')
+                        ->orWhere(function ($query) {
+                            $query->where('disposisistaff.divisi', '=', 'user.divisi')
+                                ->where('user.level', '=', 3);
+                        });
+                })
+                ->where('file.aksi', 2)
+                ->select('file.*', 'user.nama')->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->first();
+            $fileskonfirmasikepala = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+                ->where('file.aksi', 2)
+                ->select('file.*')->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->paginate(10);
         } else {
             $files = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
                 ->join('disposisistaff', 'konfirmasi.nomor_surat', '=', 'disposisistaff.nomor_surat')
@@ -201,25 +236,28 @@ class RouteController extends Controller
 
     public function outgoing(Request $request)
     {
-        if ($request->keyword) {
-            $listsuratmasuk = outgoing::search($request->keyword)->get();
-            $listsuratmasukkepala = outgoing::search($request->keyword)->get();
-            $listsuratmasukadmin = outgoing::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->where('nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->where('nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $listsuratmasukadmin = outgoing::where('nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $jabatan = outgoing::join('user', 'outgoing.id_pos', '=', 'user.id_pos')
+                ->select('outgoing.*', 'user.jabatan')->where('nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->first();
         } else {
             $listsuratmasuk = outgoing::where('divisi', Session('divisi'))->paginate(10);
             $listsuratmasukkepala = outgoing::wherein('status', [1, 2])->paginate(10);
             $listsuratmasukadmin = outgoing::paginate(10);
             $jabatan = outgoing::join('user', 'outgoing.id_pos', '=', 'user.id_pos')
-            ->select('outgoing.*', 'user.jabatan')
-            ->first();
+                ->select('outgoing.*', 'user.jabatan')
+                ->first();
         }
         return view('outgoing.main', ['listmasuk' => $listsuratmasuk, 'listkepalamasuk' => $listsuratmasukkepala, 'listmasukadmin' => $listsuratmasukadmin, 'jabatan' => $jabatan]);
     }
 
-      public function outgoingstaff(Request $request)
+    public function outgoingstaff(Request $request)
     {
-        if ($request->keyword) {
-            $listsuratmasukstaff = outgoing::search($request->keyword)->get();
+        if ($request->has('search')) {
+            $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->paginate(10);
         }

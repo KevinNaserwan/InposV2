@@ -11,16 +11,24 @@ class ArsipController extends Controller
 {
     public function showarsip(Request $request)
     {
-        if ($request->keyword) {
+        if ($request->has('search')) {
+            $arsip = Files::where('nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 0)->pluck('nomor_surat');
             $konfirmasiFiles = konfirmasi::pluck('nomor_surat');
             $disposisiFiles = Disposisi::pluck('nomor_surat');
-            $arsip = Files::search($request->keyword)->get();
-            $files = Files::search($request->keyword)
-                ->get();
-            $filesmasuk = Files::search($request->keyword)->get();
-            $filesDisposisiStaff = Files::search($request->keyword)->get();
-            $jumlahFileDivisi3 = Files::search($request->keyword)->get();
+
+            $files = Files::whereNotIn('nomor_surat', $konfirmasiFiles)
+                ->whereNotIn('nomor_surat', $disposisiFiles)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->paginate(10);
+            $filesmasuk = Files::whereIn('nomor_surat', $disposisiFiles)->whereHas('disposisi', function ($query) {
+                $query->where('divisi', Session('divisi'))->where('status', 0);
+            })->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $filesDisposisiStaff = Files::whereHas('disposisiStaff', function ($query) {
+                $query->where('divisi', Session('divisi'))->where('id_pos', Session('id_pos'))->where('status', 0);
+            })->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $jumlahFileDivisi3 = Files::whereHas('disposisi', function ($query) {
+                $query->where('divisi', Session('divisi'))->where('status', 0);
+            })->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $arsip = Files::paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 0)->pluck('nomor_surat');
