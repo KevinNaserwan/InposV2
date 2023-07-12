@@ -29,7 +29,7 @@ Route::post('/loginproses', [AuthController::class, 'loginproses'])->name('login
 
 
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     //Route Untuk Logout
     Route::get('/logout', [AuthController::class, 'logout']);
 
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/export-pdf/{nomor_surat}', [InposController::class, 'exportpdf']);
     Route::get('/kirimsurat/{nomor_surat}', [InposController::class, 'kirimsurat']);
     Route::get('/setujuisurat/{nomor_surat}', [InposController::class, 'setujuisurat']);
-});
+// });
 
 
 

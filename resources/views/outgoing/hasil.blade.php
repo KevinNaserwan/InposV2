@@ -235,9 +235,12 @@
                 </div>
             @endif
         @elseif (Session('level') == 3)
-            <div class="button1">
-                <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
-            </div>
+            @if ($isi_surat->status == 2)
+            @elseif ($isi_surat->status == 1)
+                <div class="button1">
+                    <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
+                </div>
+            @endif
         @elseif (Session('level') == 4)
         @endif
         @if ($isi_surat->status == 2)

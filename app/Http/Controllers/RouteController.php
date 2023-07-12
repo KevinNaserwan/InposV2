@@ -260,8 +260,11 @@ class RouteController extends Controller
             $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $listsuratmasukstaff = outgoing::where('id_pos', Session('id_pos'))->paginate(10);
+            $jabatan = outgoing::join('user', 'outgoing.id_pos', '=', 'user.id_pos')
+                ->select('outgoing.*', 'user.jabatan')->where('nomor_surat', 'LIKE', '%' . $request->search . '%')
+                ->first();
         }
-        return view('outgoing.outgoingstaff', ['liststaffmasuk' => $listsuratmasukstaff]);
+        return view('outgoing.outgoingstaff', ['liststaffmasuk' => $listsuratmasukstaff, 'jabatan' => $jabatan]);
     }
 
     public function hasil($nomor_surat)
