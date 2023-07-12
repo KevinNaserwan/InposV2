@@ -68,6 +68,7 @@ Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginpr
     Route::get('/preview/{nama_file}', [PreviewController::class, 'showfile']);
     Route::get('/previewkeluar/{nama_file}', [PreviewController::class, 'showfilekeluar']);
     Route::get('/previewkonfirmasi/{nomor_surat}', [PreviewController::class, 'konfirmasidetail']);
+    Route::get('/unduh/{nama_file}', [PreviewController::class, 'unduh']);
 
     //Route untuk arsip
     Route::post('/arsipfile/{nama_file}', [PreviewController::class, 'arsipfile']);
@@ -79,6 +80,7 @@ Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginpr
 
     //Route untuk konfirmasi
     Route::get('/konfirmasi', [RouteController::class, 'konfirmasi']);
+    Route::get('/unduhkonfirmasi/{nama_file}', [PreviewController::class, 'unduhkonfirmasi']);
 
     //route untuk delete
     Route::delete('/arsip/delete/{file_pdf}', [InposController::class, 'delete']);

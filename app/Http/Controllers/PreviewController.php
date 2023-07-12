@@ -25,8 +25,29 @@ class PreviewController extends Controller
 
         // Mengambil data dari tabel disposisi
         $disposisi = Disposisi::where('nomor_surat', $view->nomor_surat)->first();
-
         return view("preview/index", ['preview' => $view, 'disposisi' => $disposisi]);
+    }
+
+    public function unduh($nama_file)
+    {
+        $view = Files::where('nama_file', $nama_file)->first();
+        // Menambahkan fitur unduh file
+        $filePdfPath = public_path('file-pdf/' . $view->file_pdf); // Mendapatkan path file PDF
+        $fileName = $view->file_pdf; // Nama file PDF
+
+        return response()->download($filePdfPath, $fileName);
+        // ->deleteFileAfterSend(true);
+    }
+
+    public function unduhkonfirmasi($nama_file)
+    {
+        $view = konfirmasi::where('nama_file', $nama_file)->first();
+        // Menambahkan fitur unduh file
+        $filePdfPath = public_path('file-konfirmasi/' . $view->nama_file); // Mendapatkan path file PDF
+        $fileName = $view->nama_file; // Nama file PDF
+
+        return response()->download($filePdfPath, $fileName);
+        // ->deleteFileAfterSend(true);
     }
 
     function showfilekeluar($nama_file)
@@ -65,9 +86,10 @@ class PreviewController extends Controller
         return redirect()->back()->with('success', 'File Berhasil Di Arsipkan');
     }
 
-    public function konfirmasidetail($nomor_surat) {
+    public function konfirmasidetail($nomor_surat)
+    {
         $view = konfirmasi::where('nomor_surat', $nomor_surat)->first();
-        return view('konfirmasi.preview',['preview' => $view,]);
+        return view('konfirmasi.preview', ['preview' => $view,]);
     }
 
 }

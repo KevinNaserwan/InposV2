@@ -143,7 +143,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                href="{{ url('/unduh') }}">Unduh</a>
+                                                href="/unduhkonfirmasi/{{$preview->nama_file}}">Unduh</a>
                                         </div>
                                     </div>
                                 </div>
