@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Disposisi;
+use App\Models\Disposisistaff;
 use App\Models\Files;
 use App\Models\konfirmasi;
 use App\Models\User;
@@ -25,7 +26,8 @@ class PreviewController extends Controller
 
         // Mengambil data dari tabel disposisi
         $disposisi = Disposisi::where('nomor_surat', $view->nomor_surat)->first();
-        return view("preview/index", ['preview' => $view, 'disposisi' => $disposisi]);
+        $disposisistaff = Disposisistaff::where('nomor_surat', $view->nomor_surat)->first();
+        return view("preview/index", ['preview' => $view, 'disposisi' => $disposisi, 'disposisistaff' => $disposisistaff]);
     }
 
     public function unduh($nama_file)

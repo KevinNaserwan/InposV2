@@ -140,13 +140,19 @@
                                             <p><strong>Catatan : </strong></p>
                                             <p>{{ $disposisi->catatan }}</p>
                                         </div>
-                                    @else
+                                    @elseif(Session('level') == 4)
+                                        <div class="Deskripsi Berkas">
+                                            <p><strong>Perihal : </strong></p>
+                                            <p>{{ implode(', ', [$disposisistaff->perihal]) }}</p>
+                                            <p><strong>Catatan : </strong></p>
+                                            <p>{{ $disposisistaff->catatan }}</p>
+                                        </div>
                                     @endif
                                     @if (Session('level') == 1)
                                         <div class="row">
                                             <div class="col">
                                                 <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                    href="/unduh/{{$preview->nama_file}}">Unduh</a>
+                                                    href="/unduh/{{ $preview->nama_file }}">Unduh</a>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -166,7 +172,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                    href="/unduh/{{$preview->nama_file}}">Unduh</a>
+                                                    href="/unduh/{{ $preview->nama_file }}">Unduh</a>
                                                 @if ($preview->aksi == 2)
                                                 @else
                                                     <a class="btn btn-sm badge disposisi" style="background-color: orange"
@@ -178,7 +184,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                    href="/unduh/{{$preview->nama_file}}">Unduh</a>
+                                                    href="/unduh/{{ $preview->nama_file }}">Unduh</a>
                                                 @if ($preview->aksi == 2)
                                                 @elseif($preview->aksi == 0 || 1)
                                                     <a class="btn btn-sm badge disposisi" style="background-color: orange"
@@ -192,7 +198,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                    href="/unduh/{{$preview->nama_file}}">Unduh</a>
+                                                    href="/unduh/{{ $preview->nama_file }}">Unduh</a>
                                                 <a class="btn btn-sm badge disposisi" style="background-color: blue"
                                                     href="/konfirmasi/{{ $preview->nomor_surat }}">Konfirmasi</a>
                                             </div>

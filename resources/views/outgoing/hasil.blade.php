@@ -210,7 +210,13 @@
                 </div>
                 <div class="kepada">
                     <p>Kepada</p>
-                    <p class="kepentingan">{{ $user->jabatan }} {{ $isi_surat->tujuan }}</p>
+                    <p class="kepentingan">
+                        @if ($isi_surat->level == 0)
+                            {{ $isi_surat->tujuan }}
+                        @elseif (($isi_surat->level == 1))
+                            {{ $user->jabatan }}
+                        @endif
+                    </p>
                     <p>Sdr. {{ $user->nama }}</p>
                     <p>Nippos. {{ $user->id_pos }}</p>
                 </div>
@@ -236,18 +242,18 @@
             @endif
         @elseif (Session('level') == 3)
             @if ($isi_surat->status == 2)
-            @elseif ($isi_surat->status == 1)
+            @elseif ($isi_surat->status == 0)
                 <div class="button1">
                     <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>
                 </div>
             @endif
         @elseif (Session('level') == 4)
-        @endif
-        @if ($isi_surat->status == 2)
-            <div class="button">
-                <a href="/export-pdf/{{ $isi_surat->nomor_surat }}">Download Surat</a>
-            </div>
-        @else
+            @if ($isi_surat->status == 2)
+                <div class="button">
+                    <a href="/export-pdf/{{ $isi_surat->nomor_surat }}">Download Surat</a>
+                </div>
+            @else
+            @endif
         @endif
     </div>
     @include('sweetalert::alert')
