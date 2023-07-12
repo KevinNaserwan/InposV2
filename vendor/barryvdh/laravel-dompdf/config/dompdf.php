@@ -235,7 +235,7 @@ return array(
          *
          * @var bool
          */
-        "enable_php" => false,
+        "enable_php" => true,
 
         /**
          * Enable inline Javascript
@@ -278,8 +278,6 @@ return array(
          * @var bool
          */
         "enable_html5_parser" => true,
-
-        'isRemoteEnabled' => true,
     ),
 
 

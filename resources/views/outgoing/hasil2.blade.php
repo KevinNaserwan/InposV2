@@ -29,15 +29,20 @@
     } */
 
     .page {
-        width: 210mm;
-        min-height: 297mm;
+        /* width: 210mm; */
+        /* min-height: 297mm; */
         padding: 20mm;
-        /* margin: 10mm 10mm 10mm 70mm; */
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
+        margin-top: 10mm;
+        /* margin: 10mm auto; */
+        /* border: 1px #D3D3D3 solid;
         border-radius: 5px;
         background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
+    }
+
+    .page+.page {
+        margin-top: 20mm;
+        /* Tambahkan margin-top di sini */
     }
 
     .subpage {
@@ -96,7 +101,7 @@
 
     .isi {
         margin-top: 40px;
-        width: 80%;
+        /* width: 80%; */
         text-align: justify;
     }
 
@@ -127,6 +132,10 @@
         line-height: 9px;
     }
 
+    .page-break {
+        margin-top: 20mm;
+    }
+
     @page {
         size: A4;
         margin: 0;
@@ -150,7 +159,14 @@
             background: initial;
             page-break-after: always;
         }
+
+        .page+.page {
+            margin-top: 20mm;
+            /* Tambahkan margin-top di sini */
+        }
     }
+
+
 
     /* .button {
         position: relative;
@@ -187,10 +203,13 @@
         <div class="page">
             <div class="subpage">
                 <div class="header">
-                    <img src="{{ asset('assetsurat/posLogo.png') }}" alt="">
+                    <img src="{{ asset('assetsurat/posLogo.png') }}" alt=""
+                        style="position: absolute;left:110px;top:60px;">
                     <div class="right">
-                        <img src="{{ asset('assetsurat/pospay.png') }}" alt="">
-                        <img src="{{ asset('assetsurat/posaja.jpg') }}" alt="">
+                        <img src="{{ asset('assetsurat/pospay.png') }}" alt=""
+                            style="position: absolute;left:580px;top:73px;">
+                        <img src="{{ asset('assetsurat/posaja.jpg') }}" alt=""
+                            style="position: absolute;left:640px;top:73px;">
                     </div>
                 </div>
                 <div class="pembuka-surat">

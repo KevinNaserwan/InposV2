@@ -24,27 +24,18 @@ Route::get('/', function () {
 });
 
 //Route untuk masuk ke login
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginproses');
+Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/loginproses', [AuthController::class, 'loginproses'])->name('loginproses');
 
 
 
-// Route::group(['middleware' => ['auth']], function () {
-    //Route Untuk Logout
-    // Route::get('/logout', [AuthController::class, 'logout']);
-
-    // Route::get('/dashboard', [RouteController::class, 'dashboard']);
-    // Route::get('/arsip', [RouteController::class, 'arsip']);
-    // Route::get('/unggah', [RouteController::class, 'unggah']);
-    // Route::get('/preview', [RouteController::class, 'preview']);
-    // Route::get('/disposisi', [RouteController::class, 'disposisi']);
-
+Route::group(['middleware' => ['auth']], function () {
     //Route Untuk Logout
     Route::get('/logout', [AuthController::class, 'logout']);
 
     //Admin Start
     //Route ke Dashboard
-    Route::get('/dashboard', [RouteController::class, 'dashboard']);
+    Route::get('/dashboard', [RouteController::class, 'dashboard'])->name('dashboard');
 
     //Route ke arsip
     Route::get('/arsip', [ArsipController::class, 'showarsip']);
@@ -60,8 +51,6 @@ Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginpr
     Route::get('/konfirmasikeluar', [RouteController::class, 'konfirmasikeluar']);
     Route::get('/konfirmasimasuk', [RouteController::class, 'konfirmasimasuk']);
     Route::get('/konfirmasimanagerkeluar', [RouteController::class, 'konfirmasimanagerkeluar']);
-
-
 
 
     //Route ke preview
@@ -93,10 +82,10 @@ Route::post('/loginproses',[AuthController::class,'loginproses'])->name('loginpr
     Route::post('/outgoingprocess', [InposController::class, 'outgoing']);
 
     //Route Download outgoing
-    Route::get('/export-pdf/{nomor_surat}',[InposController::class,'exportpdf']);
-    Route::get('/kirimsurat/{nomor_surat}',[InposController::class,'kirimsurat']);
-    Route::get('/setujuisurat/{nomor_surat}',[InposController::class,'setujuisurat']);
-// });
+    Route::get('/export-pdf/{nomor_surat}', [InposController::class, 'exportpdf']);
+    Route::get('/kirimsurat/{nomor_surat}', [InposController::class, 'kirimsurat']);
+    Route::get('/setujuisurat/{nomor_surat}', [InposController::class, 'setujuisurat']);
+});
 
 
 

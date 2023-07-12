@@ -40,6 +40,10 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 
+    .page-break {
+        margin-top: 20mm;
+    }
+
     .subpage {
         padding: 1cm;
         /* border: 5px #F15A2B solid; */
@@ -96,7 +100,7 @@
 
     .isi {
         margin-top: 40px;
-        width: 80%;
+        /* width: 80%; */
         text-align: justify;
     }
 

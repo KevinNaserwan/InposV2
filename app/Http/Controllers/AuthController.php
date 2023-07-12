@@ -15,7 +15,7 @@ class AuthController extends Controller
         if (Auth::check() == true) {
 
             //arahkan ke routing dashboard
-            return redirect('/dashboard');
+            return redirect('dashboard');
         } else {
             return view('auth.login');
         }
@@ -44,7 +44,7 @@ class AuthController extends Controller
         // dd($credentials);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('success', 'Anda Berhasil Login');
+            return redirect()->route('dashboard')->with('success', 'Anda Berhasil Login');
         } else {
             return redirect('/login')->with('errors', 'Username atau password yang Anda masukkan salah');
         }
@@ -58,9 +58,10 @@ class AuthController extends Controller
     //     return redirect('/login')->with('success', 'Anda Berhasil Logout');
     // }
 
-    public function logout () {
+    public function logout()
+    {
         // menghapus session yang login
-        auth()->logout();
+        auth::logout();
 
         // arahkan ke routing yang namanya login
         return redirect('login')->with('success', 'Anda Berhasil Logout');

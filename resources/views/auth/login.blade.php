@@ -94,14 +94,6 @@
                                                 required>
                                             <div class="invalid-feedback">Harap masukan password anda!</div>
                                         </div>
-
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    value="true" id="rememberMe">
-                                                <label class="form-check-label" for="rememberMe">Ingat saya</label>
-                                            </div>
-                                        </div>
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100"
                                                 style="background-color: orange;border-color:orange;color:black;"
@@ -138,7 +130,7 @@
     <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script> --}}
     <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>

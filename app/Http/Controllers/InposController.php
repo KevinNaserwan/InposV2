@@ -202,6 +202,7 @@ class InposController extends Controller
 
     public function exportpdf($nomor_surat)
     {
+        // require_once 'dompdf/autoload.inc.php';
         $dompdf = new Dompdf();
         $isi_surat = outgoing::where('nomor_surat', $nomor_surat)->first();
         $user = User::where('divisi', $isi_surat->divisi)
@@ -209,15 +210,23 @@ class InposController extends Controller
             ->first();
         $html = View::make('outgoing.hasil2', compact('user', 'isi_surat'))->render();
         // $options = new Options();
-        // $options->set('isRemoteEnabled', true); // Aktifkan dukungan aset gambar remote
-        // $dompdf->setOptions($options);
+        // $options->set('isRemoteEnabled', true); // Enable remote asset support
+
+        // if (extension_loaded('curl')) {
+        //     $options->set('isPhpEnabled', true); // Enable PHP to use curl
+        // } else {
+        //     ini_set('allow_url_fopen', true); // Enable allow_url_fopen setting
+        // }
+
+        // // Set the path(s) for Dompdf "chroot" option if accessing local files
+        // $options->set('chroot', public_path('assetsurat'));
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->setBasePath(public_path('assetsurat/posLogo.png'));
         $dompdf->render();
         return $dompdf->stream();
-        // $pdf = Pdf::loadView('outgoing.hasil', ['user' => $users, 'isi_surat' => $isi_surat])->setPaper('a4', 'potrait');
-        // return $pdf->download('invoice.pdf');
     }
+
 
     public function kirimsurat($nomor_surat)
     {
