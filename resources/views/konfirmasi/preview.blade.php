@@ -103,6 +103,27 @@
                                     <i class="bi bi-circle"></i><span>Outgoing</span>
                                 </a>
                             </li>
+                        @elseif (Session('level') == 5)
+                            <li>
+                                <a href="/arsip">
+                                    <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/unggah">
+                                    <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/konfirmasimasuk">
+                                    <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/outgoing-masuk">
+                                    <i class="bi bi-circle"></i><span>Outgoing</span>
+                                </a>
+                            </li>
                         @endif
                     </ul>
                 </ul>
@@ -130,20 +151,20 @@
                             <h5 class="card-title">Konfirmasi</h5>
                             <div class="row">
                                 <div class="col flex ">
-                                    <iframe src="{{ asset('file-konfirmasi/' . $preview->nama_file) }}" frameborder="20" width="100%"
-                                        height="400px" style="justify-content-center"></iframe>
+                                    <iframe src="{{ asset('file-konfirmasi/' . $preview->nama_file) }}" frameborder="20"
+                                        width="100%" height="400px" style="justify-content-center"></iframe>
                                 </div>
                                 <div class="col tombol">
                                     <div class="row">
                                         <div class="col">
                                             <h5>catatan:</h5>
-                                            <p>{{$preview->keterangan}}</p>
+                                            <p>{{ $preview->keterangan }}</p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <a class="btn btn-sm badge disposisi" style="background-color: green"
-                                                href="/unduhkonfirmasi/{{$preview->nama_file}}">Unduh</a>
+                                                href="/unduhkonfirmasi/{{ $preview->nama_file }}">Unduh</a>
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +176,6 @@
         </section>
     </main><!-- End #main -->
     <style>
-
         .tombol {
             margin-top: 10px;
         }
@@ -168,6 +188,7 @@
             border-radius: 10px;
             font-size: 15px;
         }
+
         .konfirmasi {
             width: 100%;
             /* Sesuaikan dengan lebar iframe */

@@ -9,6 +9,7 @@ use App\Models\konfirmasi;
 use App\Models\outgoing;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RouteController extends Controller
 {
@@ -94,6 +95,7 @@ class RouteController extends Controller
             $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $arsip = Files::paginate(10);
+            $arsipdeputi = Files::where('tujuan', 1)->whereIn('aksi', [1, 2])->paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 1)->pluck('nomor_surat');
             $disposisiFileskepala = Disposisi::wherein('status', [0, 1])->pluck('nomor_surat');
             $konfirmasiFiles = konfirmasi::pluck('nomor_surat');
@@ -102,9 +104,18 @@ class RouteController extends Controller
                 ->wherein('aksi', [1, 2])
                 ->paginate(10);
             $filesDivisi3 = Files::whereIn('nomor_surat', $disposisiFiles)->paginate(10);
+            $tujuan = Files::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('disposisiStaff', function ($query) {
+                    $query->select('id_pos')->with('user:nama');
+                })
+                ->paginate(10);
+            $disposisiFiles = Disposisi::pluck('nomor_surat');
+            $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('file')
+                ->get();
             // dd($disposisiFileskepala );
         }
-        return view("unggah.index", ['arsip' => $arsip, 'disposisimanager' => $filesDivisi3, 'keluarkepala' => $filekeluarkepala]);
+        return view("unggah.index", ['arsip' => $arsip, 'arsipdeputi' => $arsipdeputi, 'tujuan' => $tujuan, 'disposisimanager' => $filesDivisi3, 'keluarkepala' => $filekeluarkepala, 'divisi' => $divisiDisposisi]);
     }
 
     public function konfirmasi(Request $request, $nomor_surat)
@@ -180,8 +191,12 @@ class RouteController extends Controller
                 ->where('disposisi.divisi', Session('divisi'))
                 ->select('file.*')
                 ->paginate(10);
+            $disposisiFiles = Disposisi::pluck('nomor_surat');
+            $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('file')
+                ->get();
         }
-        return view('konfirmasi.manager', ['konfirmasistaff' => $files]);
+        return view('konfirmasi.manager', ['konfirmasistaff' => $files, 'divisi' => $divisiDisposisi]);
     }
 
     public function konfirmasimasuk(Request $request)
@@ -275,5 +290,50 @@ class RouteController extends Controller
             ->first();
         return view('outgoing.hasil', ['user' => $users, 'isi_surat' => $isi_surat]);
         // dd($users);
+    }
+
+    public function list()
+    {
+        $liststaff = User::where('level', 4)->paginate(10);
+        return view('list.index', ['liststaff' => $liststaff]);
+    }
+
+    public function listmanager()
+    {
+        $liststaff = User::where('level', 3)->paginate(10);
+        return view('list.index', ['liststaff' => $liststaff]);
+    }
+
+    public function listdeputi()
+    {
+        $liststaff = User::where('level', 5)->paginate(10);
+        return view('list.index', ['liststaff' => $liststaff]);
+    }
+
+    public function listgm()
+    {
+        $liststaff = User::where('level', 2)->paginate(10);
+        return view('list.index', ['liststaff' => $liststaff]);
+    }
+
+    public function listadmin()
+    {
+        $liststaff = User::where('level', 1)->paginate(10);
+        return view('list.index', ['liststaff' => $liststaff]);
+    }
+
+    public function edituser($id_pos)
+    {
+        $user = User::where('id_pos', $id_pos)->firstOrFail();
+        return view('list.preview', ['user' => $user]);
+    }
+
+    public function update(Request $request, $id_pos)
+    {
+        $user = User::where('id_pos', $id_pos)->firstOrFail();
+        $user->update($request->all());
+        // dd($user);
+        return view('list.preview')->with('success', 'Berhasil Mengedit User');
+
     }
 }

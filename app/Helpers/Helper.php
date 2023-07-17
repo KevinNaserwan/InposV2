@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\Files;
 use App\Models\outgoing;
 
 class Helper
@@ -49,12 +50,26 @@ class Helper
         }
 
         // return $zeros . $last_number . '/' . $prefix;
-        return $prefix . '-' . $zeros . $last_number;
+        return $zeros . $last_number;
     }
 
     public static function generateAutoIncrement()
     {
         $lastRecord = outgoing::orderBy('nomor_surat', 'desc')->first();
+        if ($lastRecord) {
+            $lastNumber = (int) substr($lastRecord->nomor_surat, -4);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        $formattedNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        return $formattedNumber;
+    }
+
+    public static function generateAutoIncrement2()
+    {
+        $lastRecord = Files::orderBy('nomor_surat', 'desc')->first();
         if ($lastRecord) {
             $lastNumber = (int) substr($lastRecord->nomor_surat, -4);
             $newNumber = $lastNumber + 1;

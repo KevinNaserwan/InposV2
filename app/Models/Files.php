@@ -13,7 +13,7 @@ class Files extends Model
 
     // protected $primaryKey = 'nomor_surat';
 
-    protected $fillable = ['nomor_surat', 'nama_file', 'tanggal', 'id_pos', 'file_pdf', 'aksi', 'status', 'keterangan'];
+    protected $fillable = ['nomor_surat', 'nama_file', 'tanggal', 'id_pos', 'file_pdf', 'aksi', 'status', 'tujuan', 'keterangan'];
     public $timestamps = false;
 
 

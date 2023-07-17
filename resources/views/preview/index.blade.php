@@ -101,6 +101,27 @@
                                 <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
+                    @elseif (Session('level') == 5)
+                        <li>
+                            <a href="/arsip">
+                                <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/unggah">
+                                <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/konfirmasimasuk">
+                                <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li><!-- End Components Nav -->
@@ -140,6 +161,8 @@
                                             <p><strong>Catatan : </strong></p>
                                             <p>{{ $disposisi->catatan }}</p>
                                         </div>
+                                    @elseif (Session('level') == 5)
+
                                     @elseif(Session('level') == 4)
                                         <div class="Deskripsi Berkas">
                                             <p><strong>Perihal : </strong></p>
@@ -169,6 +192,22 @@
                                             </form>
                                         </div>
                                     @elseif (Session('level') == 2)
+                                        <div class="row">
+                                            <div class="col">
+                                                <a class="btn btn-sm badge disposisi" style="background-color: green"
+                                                    href="/unduh/{{ $preview->nama_file }}">Unduh</a>
+                                                @if ($preview->aksi == 2)
+                                                @else
+                                                    @if ($preview->tujuan == 1)
+                                                    @else
+                                                        <a class="btn btn-sm badge disposisi"
+                                                            style="background-color: orange"
+                                                            href="/disposisi/{{ $preview->nomor_surat }}">Disposisi</a>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @elseif (Session('level') == 5)
                                         <div class="row">
                                             <div class="col">
                                                 <a class="btn btn-sm badge disposisi" style="background-color: green"

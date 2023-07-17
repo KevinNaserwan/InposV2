@@ -4,20 +4,53 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-
-            <li class="nav-item">
-                <a class="nav-link " href="/dashboard">
-                    <i class="bi bi-grid"></i>
-                    <span>Beranda</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
-
+            @if (Session('level') == 0)
+                <li class="nav-item">
+                    <a class="nav-link " href="/dashboard">
+                        <i class="bi bi-grid"></i>
+                        <span>Create User</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+            @else
+                <li class="nav-item">
+                    <a class="nav-link " href="/dashboard">
+                        <i class="bi bi-grid"></i>
+                        <span>Beranda</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+            @endif
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>Menu</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-menu-button-wide"></i><span>Menu List</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                    @if (Session('level') == 1)
+                    @if (Session('level') == 0)
+                        <li>
+                            <a href="/liststaff">
+                                <i class="bi bi-circle"></i><span>List Staff</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>List Manager</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>List EGM</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>List Deputi EGM</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>List Admin</span>
+                            </a>
+                        </li>
+                    @elseif (Session('level') == 1)
                         <li>
                             <a href="/arsip">
                                 <i class="bi bi-circle"></i><span>Arsip</span>
@@ -101,6 +134,27 @@
                                 <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
+                    @elseif (Session('level') == 5)
+                        <li>
+                            <a href="/arsip">
+                                <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/unggah">
+                                <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/konfirmasimasuk">
+                                <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li><!-- End Components Nav -->
@@ -130,7 +184,96 @@
                             class="badge">{{ Session('jabatan') }}</span>
                     </p>
                 </div>
-                @if (Session('level') == 1)
+                @if (Session('level') == 0)
+                    <section class="section">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Tambah User</h5>
+                                        <form method="POST" action="/createuser" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Nippos</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" value="" name="id_pos"
+                                                        class="form-control" id="id_pos" placeholder="Masukkan Nippos"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Nama</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" value="" name="nama"
+                                                        class="form-control" id="nama" placeholder="Masukkan Nama"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Jabatan</label>
+                                                <div class="col-sm-10">
+                                                    <select name="jabatan" id="jabatan" class="form-control">
+                                                        <option disabled selected value>Pilih Jabatan</option>
+                                                        <option value="Admin">Admin</option>
+                                                        <option value="Executive General Manager">Executive General Manager
+                                                        </option>
+                                                        <option value="Deputi Executive General Manager">Deputi Executive
+                                                            General Manager</option>
+                                                        <option value="Manager">Manager</option>
+                                                        <option value="Staff">Staff</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Password</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" value="" name="password"
+                                                        class="form-control" id="password"
+                                                        placeholder="Masukkan Password" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Divisi</label>
+                                                <div class="col-sm-10">
+                                                    <select name="divisi" id="divisi" class="form-control">
+                                                        <option disabled selected value>Pilih divisi</option>
+                                                        <option value="2">Pelayanan Outlet & Operasi Cabang</option>
+                                                        <option value="3">Operasi Kurir</option>
+                                                        <option value="4">Solusi Teknologi</option>
+                                                        <option value="5">Keuangan & Aset</option>
+                                                        <option value="6">Kesekretariatan</option>
+                                                        <option value="7">Pengawas Umum</option>
+                                                        <option value="8">Bisnis Jasa Keuangan</option>
+                                                        <option value="9">Bisnis Penjualan, Korporat, Kurir Logistik
+                                                        </option>
+                                                        <option value="10">Ritel/Kemitraan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label"></label>
+                                                <div class="col-sm-10">
+                                                    <button type="submit" class="btn btn-primary">Buat User</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {{-- @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $item)
+                                            <li>{{ $item }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif --}}
+
+                            </div>
+                        </div>
+                    </section>
+                @elseif (Session('level') == 1)
                     <!-- Left side columns -->
                     <div>
                         <div class="row">
@@ -216,6 +359,165 @@
                         </div>
                     </div><!-- End Left side columns -->
                 @elseif (Session('level') == 2)
+                    <!-- Left side columns -->
+                    <div>
+                        <div class="row">
+                            <!-- Sales Card -->
+                            <div class="col-xxl-3 col-md-3">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Surat Masuk
+                                        </h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-cart"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ $konfirmasikepala }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Sales Card -->
+
+                            <!-- Revenue Card -->
+                            <div class="col-xxl-3 col-md-3">
+                                <div class="card info-card revenue-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Disposisi
+                                        </h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-currency-dollar"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ $disposisikepala }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Revenue Card -->
+
+                            <!-- Customers Card -->
+                            <div class="col-xxl-3 col-md-3">
+                                <div class="card info-card customers-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Menunggu
+                                        </h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-people"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ $menunggukepala }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Customers Card -->
+
+                            <!-- Revenue Card -->
+                            <div class="col-xxl-3 col-md-3">
+                                <div class="card info-card confirm-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Konfirmasi
+                                        </h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-currency-dollar"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>{{ $countkonfirmkepala }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Revenue Card -->
+
+                            <!-- Recent Sales -->
+                            <div class="col-12">
+                                <div class="card recent-sales overflow-auto">
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Filter</h6>
+                                            </li>
+
+                                            <li>
+                                                <a class="dropdown-item" href="#">Today</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#">This Month</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#">This Year</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Status Berkas <span>| Hari Ini</span>
+                                        </h5>
+
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No.</th>
+                                                    <th scope="col">Nama File</th>
+                                                    <th scope="col">Keterangan</th>
+                                                    <th scope="col">Pengirim</th>
+                                                    <th scope="col">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($suratkepalatoday as $index => $item)
+                                                    <tr>
+                                                        <th scope="row">{{ $index + $suratkepalatoday->firstItem() }}
+                                                        </th>
+                                                        <td>{{ $item->file_pdf }}</td>
+                                                        <td>{{ $item->keterangan }}</td>
+                                                        <td>{{ $item->posisi['jabatan'] }}</td>
+                                                        <td>
+                                                            @if ($item->aksi == 0)
+                                                                <span class="badge bg-success">Disimpan</span>
+                                                            @elseif ($item->aksi == 1)
+                                                                <span class="badge bg-warning">Disposisi</span>
+                                                            @elseif ($item->aksi == 2)
+                                                                <span class="badge bg-primary">Diarsipkan</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        {{ $suratkepalatoday->links() }}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Recent Sales -->
+                        </div>
+                    </div>
+                    <!-- End Left side columns -->
+                @elseif (Session('level') == 5)
                     <!-- Left side columns -->
                     <div>
                         <div class="row">

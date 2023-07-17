@@ -213,7 +213,7 @@
                     <p class="kepentingan">
                         @if ($isi_surat->level == 0)
                             {{ $isi_surat->tujuan }}
-                        @elseif (($isi_surat->level == 1))
+                        @elseif ($isi_surat->level == 1)
                             {{ $user->jabatan }}
                         @endif
                     </p>
@@ -235,6 +235,9 @@
         </div>
         @if (Session('level') == 2)
             @if ($isi_surat->status == 2)
+                <div class="button">
+                    <a href="/export-pdf/{{ $isi_surat->nomor_surat }}">Download Surat</a>
+                </div>
             @elseif ($isi_surat->status == 1)
                 <div class="button1">
                     <a href="/setujuisurat/{{ $isi_surat->nomor_surat }}" id="confrim">Setujui Surat</a>
@@ -242,6 +245,9 @@
             @endif
         @elseif (Session('level') == 3)
             @if ($isi_surat->status == 2)
+                <div class="button">
+                    <a href="/export-pdf/{{ $isi_surat->nomor_surat }}">Download Surat</a>
+                </div>
             @elseif ($isi_surat->status == 0)
                 <div class="button1">
                     <a href="/kirimsurat/{{ $isi_surat->nomor_surat }}" id="confrim">Kirim</a>

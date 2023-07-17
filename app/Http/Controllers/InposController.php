@@ -14,6 +14,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
 class InposController extends Controller
@@ -23,18 +24,21 @@ class InposController extends Controller
         $request->validate([
             'file_pdf' => 'required|mimes:pdf',
             'keterangan' => 'required',
+            'tujuan' => 'required'
         ], [
             'file_pdf.required' => 'File wajib diisi',
+            'tujuan' => 'Tujuan wajib diisi',
             'keterangan' => 'Keterangan wajib diisi',
             'file_pdf.mimes' => 'File hanya diperbolehkan Berjenis PDF'
         ]);
 
-        $nomor_surat = Helper::IDGenerator2(new Files, 'nomor_surat', 3, 'KCU-PLG');
+        $nomor_surat = Helper::generateAutoIncrement2();
         $tanggal = date('Y-m-d H:i:s');
         $nama_file = Helper::IDGenerator(new Files, 'nama_file', 3, date("dm", strtotime($tanggal)));
         $foto_file = $request->file('file_pdf');
         $foto_nama = $nama_file . "." . $request->file('file_pdf')->getClientOriginalExtension();
         $foto_file->move(public_path('file-pdf'), $foto_nama);
+        $prefix = 'KCU-PG';
         if ($request->input('aksi') == true) {
             $aksi = 2;
         } else {
@@ -48,7 +52,8 @@ class InposController extends Controller
             'file_pdf' => $foto_nama,
             'aksi' => $aksi,
             'status' => 0,
-            'keterangan' => $request->input('keterangan')
+            'keterangan' => $request->input('keterangan'),
+            'tujuan' => $request->input('tujuan')
         ];
 
         // if ($request->fails()) {
@@ -84,7 +89,7 @@ class InposController extends Controller
         ];
 
         // dd($data);
-        $file = Files::where('nomor_surat', $nomor_surat)->update(['aksi' => 1, 'status' => 0]);
+        Files::where('nomor_surat', $nomor_surat)->update(['aksi' => 1, 'status' => 0]);
         Disposisi::create($data);
         return redirect()->back()->with('success', 'File Berhasil Di Disposisi');
     }
@@ -145,6 +150,49 @@ class InposController extends Controller
         return redirect()->back()->with('success', 'File Berhasil Di Konfirmasi');
     }
 
+    public function storeuser(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'jabatan' => 'required',
+            'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+        ], [
+            'nama' => 'Nama wajib diisi',
+            'jabatan' => 'Jabatan wajib diisi',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password harus terdiri dari minimal : 6 karakter',
+            'password.regex' => 'Password harus terdiri dari huruf besar, huruf kecil, dan angka',
+        ]);
+
+        if ($request->input('jabatan') == 'Admin') {
+            $level = 1;
+        } elseif ($request->input('jabatan') == 'Executive General Manager') {
+            $level = 2;
+        } elseif ($request->input('jabatan') == 'Deputi Executive General Manager') {
+            $level = 5;
+        } elseif ($request->input('jabatan') == 'Manager') {
+            $level = 3;
+        } elseif ($request->input('jabatan') == 'Staff') {
+            $level = 4;
+        }
+        $data = [
+            'id_pos' => $request->input('id_pos'),
+            'nama' => $request->input('nama'),
+            'jabatan' => $request->input('jabatan'),
+            'password' => Hash::make($request->input('password')),
+            'divisi' => $request->input('divisi'),
+            'tujuan' => $request->input('tujuan'),
+            'level' => $level
+        ];
+
+        // if ($request->fails()) {
+        //     return back()->with('errors', $request->messages()->all()[0])->withInput();
+        // }
+
+        User::create($data);
+        return redirect('/dashboard')->with('success', 'Berhasil Menambahkan User');
+    }
+
     public function delete($file_pdf)
     {
         $files = Files::where('file_pdf', $file_pdf)->first();
@@ -153,9 +201,9 @@ class InposController extends Controller
             $title = 'Delete User!';
             $text = "Are you sure you want to delete?";
             confirmDelete($title, $text);
-            return redirect('/unggah')->with('success', 'File berhasil dihapus');
+            return redirect('/arsip')->with('success', 'File berhasil dihapus');
         } else {
-            return redirect('/unggah')->with('errors', 'File yang sudah ditindak lanjuti tidak dapat dihapus');
+            return redirect('/arsip')->with('errors', 'File yang sudah ditindak lanjuti tidak dapat dihapus');
         }
     }
 

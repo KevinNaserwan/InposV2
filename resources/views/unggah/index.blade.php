@@ -101,6 +101,27 @@
                                 <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
+                    @elseif (Session('level') == 5)
+                        <li>
+                            <a href="/arsip">
+                                <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/unggah" class="nav-link">
+                                <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/konfirmasimasuk">
+                                <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li><!-- End Components Nav -->
@@ -140,6 +161,16 @@
                                         <div class="col-sm-10">
                                             <input type="file" value="" name="file_pdf" class="form-control"
                                                 id="file_pdf" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">Tujuan</label>
+                                        <div class="col-sm-10">
+                                            <select name="tujuan" id="tujuan" class="form-control">
+                                                <option disabled selected value>Tujuan</option>
+                                                <option value="0">Executive General Manager</option>
+                                                <option value="1">Deputi Executive General Manager</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -200,9 +231,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nama File</th>
+                                            <th scope="col">Nomor Surat</th>
                                             <th scope="col">Keterangan</th>
-                                            <th scope="col">Pengirim</th>
+                                            <th scope="col">Tujuan</th>
                                             <th scope="col">Aksi</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Tindakan</th>
@@ -228,9 +259,65 @@
                                         @foreach ($keluarkepala as $index => $item)
                                             <tr>
                                                 <th scope="row">{{ $index + $keluarkepala->firstItem() }}</th>
-                                                <td>{{ $item->file_pdf }}</td>
+                                                <td>
+                                                    @if ($item->aksi == 0)
+                                                        {{ $item->nomor_surat }}/KCU-PG
+                                                    @else
+                                                        {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                                            @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                                @if ($disposisi->divisi == 2)
+                                                                    Pelayanan Outlet & Operasi Cabang
+                                                                @elseif ($disposisi->divisi == 3)
+                                                                    Operasi Kurir
+                                                                @elseif ($disposisi->divisi == 4)
+                                                                    Solusi Teknologi
+                                                                @elseif ($disposisi->divisi == 5)
+                                                                    Keuangan & Aset
+                                                                @elseif ($disposisi->divisi == 6)
+                                                                    Kesekretariatan
+                                                                @elseif ($disposisi->divisi == 7)
+                                                                    Pengawasan Umum
+                                                                @elseif ($disposisi->divisi == 8)
+                                                                    Bisnis Jasa Keuangan
+                                                                @elseif ($disposisi->divisi == 9)
+                                                                    Bisnis Penjualan, Korporat, Kurir Logistik
+                                                                @elseif ($disposisi->divisi == 10)
+                                                                    Ritel/Kemitraan
+                                                                @elseif ($disposisi->divisi == 11)
+                                                                    Semua
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </td>
                                                 <td>{{ $item->keterangan }}</td>
-                                                <td>{{ $item->posisi['jabatan'] }}</td>
+                                                <td>Divisi
+                                                    @foreach ($divisi as $disposisi)
+                                                        @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                            @if ($disposisi->divisi == 2)
+                                                                Pelayanan Outlet & Operasi Cabang
+                                                            @elseif ($disposisi->divisi == 3)
+                                                                Operasi Kurir
+                                                            @elseif ($disposisi->divisi == 4)
+                                                                Solusi Teknologi
+                                                            @elseif ($disposisi->divisi == 5)
+                                                                Keuangan & Aset
+                                                            @elseif ($disposisi->divisi == 6)
+                                                                Kesekretariatan
+                                                            @elseif ($disposisi->divisi == 7)
+                                                                Pengawasan Umum
+                                                            @elseif ($disposisi->divisi == 8)
+                                                                Bisnis Jasa Keuangan
+                                                            @elseif ($disposisi->divisi == 9)
+                                                                Bisnis Penjualan, Korporat, Kurir Logistik
+                                                            @elseif ($disposisi->divisi == 10)
+                                                                Ritel/Kemitraan
+                                                            @elseif ($disposisi->divisi == 11)
+                                                                Semua
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
+                                                </td>
                                                 <td>
                                                     @if ($item->aksi == 0)
                                                         <span class="badge bg-success">Disimpan</span>
@@ -254,19 +341,160 @@
                                                 <td>
                                                     <a class="btn btn-sm btn-primary"
                                                         href="/previewkeluar/{{ $item->nama_file }}">Buka</a>
-                                                    <form action="/arsip/delete/{{ $item->file_pdf }}" method="POST"
-                                                        style="display: inline">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button class="btn btn-sm btn-danger"
-                                                            id="delete">Delete</button>
-                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                                 {{ $keluarkepala->links() }}
+                                <!-- End Default Table Example -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            </section>
+        @elseif (Session('level') == 5)
+            <div class="pagetitle">
+                <h1>Tabel Surat Keluar</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Menu</a></li>
+                        <li class="breadcrumb-item active">Surat Keluar</li>
+                    </ol>
+                </nav>
+            </div><!-- End Page Title -->
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Surat Keluar</h5>
+                                {{-- <a href="{{ url('contact-add') }}" class="btn btn-primary mb-2">Add</a> --}}
+
+                                <!-- Default Table -->
+                                <table class="table" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nomor Surat</th>
+                                            <th scope="col">Keterangan</th>
+                                            <th scope="col">Pengirim</th>
+                                            <th scope="col">Aksi</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Tindakan</th>
+                                        </tr>
+                                    </thead>
+                                    {{-- <tbody> --}}
+                                    {{-- akan di isi --}}
+                                    {{-- @foreach ($data as $dt)
+                            <tr>
+                              <th scope="row">{{$loop->index + 1}}</th>
+                              <td>{{$dt->name}}</td>
+                              <td>{{$dt->email}}</td>
+                              <td>{{$dt->plan}}</td>
+                              <td>{{$dt->project}}</td>
+                              <td>
+                                <a href="{{url('contact-edit')}}/{{$dt->id}}" class="btn btn-sm btn-success">Edit</a>
+                                <a onclick="return confirm('yakin hapus data?')" href="{{url('contact-delete')}}/{{$dt->id}}" class="btn btn-sm btn-danger">Delete</a>
+                              </td>
+                            </tr>
+                            @endforeach --}}
+                                    {{-- </tbody> --}}
+                                    <tbody>
+                                        @foreach ($arsipdeputi as $index => $item)
+                                            <tr>
+                                                <th scope="row">{{ $index + $keluarkepala->firstItem() }}</th>
+                                                <td>
+                                                    @if ($item->aksi == 0)
+                                                        {{ $item->nomor_surat }}/KCU-PG
+                                                    @else
+                                                        {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                                            @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                                @if ($disposisi->divisi == 2)
+                                                                    Pelayanan Outlet & Operasi Cabang
+                                                                @elseif ($disposisi->divisi == 3)
+                                                                    Operasi Kurir
+                                                                @elseif ($disposisi->divisi == 4)
+                                                                    Solusi Teknologi
+                                                                @elseif ($disposisi->divisi == 5)
+                                                                    Keuangan & Aset
+                                                                @elseif ($disposisi->divisi == 6)
+                                                                    Kesekretariatan
+                                                                @elseif ($disposisi->divisi == 7)
+                                                                    Pengawasan Umum
+                                                                @elseif ($disposisi->divisi == 8)
+                                                                    Bisnis Jasa Keuangan
+                                                                @elseif ($disposisi->divisi == 9)
+                                                                    Bisnis Penjualan, Korporat, Kurir Logistik
+                                                                @elseif ($disposisi->divisi == 10)
+                                                                    Ritel/Kemitraan
+                                                                @elseif ($disposisi->divisi == 11)
+                                                                    Semua
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </td>
+                                                <td>{{ $item->keterangan }}</td>
+                                                <td>Divisi
+                                                    @foreach ($divisi as $disposisi)
+                                                        @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                            @if ($disposisi->divisi == 2)
+                                                                Pelayanan Outlet & Operasi Cabang
+                                                            @elseif ($disposisi->divisi == 3)
+                                                                Operasi Kurir
+                                                            @elseif ($disposisi->divisi == 4)
+                                                                Solusi Teknologi
+                                                            @elseif ($disposisi->divisi == 5)
+                                                                Keuangan & Aset
+                                                            @elseif ($disposisi->divisi == 6)
+                                                                Kesekretariatan
+                                                            @elseif ($disposisi->divisi == 7)
+                                                                Pengawasan Umum
+                                                            @elseif ($disposisi->divisi == 8)
+                                                                Bisnis Jasa Keuangan
+                                                            @elseif ($disposisi->divisi == 9)
+                                                                Bisnis Penjualan, Korporat, Kurir Logistik
+                                                            @elseif ($disposisi->divisi == 10)
+                                                                Ritel/Kemitraan
+                                                            @elseif ($disposisi->divisi == 11)
+                                                                Semua
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
+                                                </td>
+                                                <td>
+                                                    @if ($item->aksi == 0)
+                                                        <span class="badge bg-success">Disimpan</span>
+                                                    @elseif ($item->aksi == 1)
+                                                        <span class="badge bg-warning">Disposisi</span>
+                                                    @elseif ($item->aksi == 2)
+                                                        <span class="badge bg-primary">Diarsipkan</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($item->status == 0)
+                                                        @if ($item->aksi == 1)
+                                                            <span class="badge bg-danger">Belum Dibaca</span>
+                                                        @else
+                                                            <span class="badge bg-success">Sudah Dibaca</span>
+                                                        @endif
+                                                    @elseif ($item->status == 1)
+                                                        <span class="badge bg-success">Sudah Dibaca</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="/previewkeluar/{{ $item->nama_file }}">Buka</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                {{ $arsipdeputi->links() }}
                                 <!-- End Default Table Example -->
                             </div>
                         </div>
@@ -299,9 +527,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nama File</th>
+                                            <th scope="col">Nomor Surat</th>
                                             <th scope="col">Keterangan</th>
-                                            <th scope="col">Pengirim</th>
+                                            <th scope="col">Tujuan</th>
                                             <th scope="col">Aksi</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Tindakan</th>
@@ -327,9 +555,47 @@
                                         @foreach ($disposisimanager as $index => $item)
                                             <tr>
                                                 <th scope="row">{{ $index + $disposisimanager->firstItem() }}</th>
-                                                <td>{{ $item->file_pdf }}</td>
+                                                <td>
+                                                    @if ($item->aksi == 0)
+                                                        {{ $item->nomor_surat }}/KCU-PG
+                                                    @else
+                                                        {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                                            @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                                @if ($disposisi->divisi == 2)
+                                                                    Pelayanan Outlet & Operasi Cabang
+                                                                @elseif ($disposisi->divisi == 3)
+                                                                    Operasi Kurir
+                                                                @elseif ($disposisi->divisi == 4)
+                                                                    Solusi Teknologi
+                                                                @elseif ($disposisi->divisi == 5)
+                                                                    Keuangan & Aset
+                                                                @elseif ($disposisi->divisi == 6)
+                                                                    Kesekretariatan
+                                                                @elseif ($disposisi->divisi == 7)
+                                                                    Pengawasan Umum
+                                                                @elseif ($disposisi->divisi == 8)
+                                                                    Bisnis Jasa Keuangan
+                                                                @elseif ($disposisi->divisi == 9)
+                                                                    Bisnis Penjualan, Korporat, Kurir Logistik
+                                                                @elseif ($disposisi->divisi == 10)
+                                                                    Ritel/Kemitraan
+                                                                @elseif ($disposisi->divisi == 11)
+                                                                    Semua
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </td>
                                                 <td>{{ $item->keterangan }}</td>
-                                                <td>{{ $item->posisi['jabatan'] }}</td>
+                                                <td>
+                                                    @foreach ($tujuan as $file)
+                                                        @if ($file->disposisiStaff->nomor_surat == $item->nomor_surat)
+                                                            <p>{{ $file->disposisiStaff->user->nama }}</p>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    @endforeach
+                                                </td>
                                                 <td>
                                                     @if ($item->aksi == 0)
                                                         <span class="badge bg-success">Disimpan</span>
@@ -357,13 +623,6 @@
                                                 <td>
                                                     <a class="btn btn-sm btn-primary"
                                                         href="/previewkeluar/{{ $item->nama_file }}">Buka</a>
-                                                    <form action="/arsip/delete/{{ $item->file_pdf }}" method="POST"
-                                                        style="display: inline">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button class="btn btn-sm btn-danger"
-                                                            id="delete">Delete</button>
-                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

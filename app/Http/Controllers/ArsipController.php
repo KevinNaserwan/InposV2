@@ -31,6 +31,7 @@ class ArsipController extends Controller
             })->where('file' . '.' . 'nomor_surat', 'LIKE', '%' . $request->search . '%')->paginate(10);
         } else {
             $arsip = Files::paginate(10);
+            $arsipdeputi = Files::where('tujuan', 1)->where('aksi', 0)->paginate(10);
             $disposisiFiles = Disposisi::where('divisi', Session('divisi'))->where('status', 0)->pluck('nomor_surat');
             $konfirmasiFiles = konfirmasi::pluck('nomor_surat');
             $disposisiFiles = Disposisi::pluck('nomor_surat');
@@ -47,8 +48,16 @@ class ArsipController extends Controller
             $jumlahFileDivisi3 = Files::whereHas('disposisi', function ($query) {
                 $query->where('divisi', Session('divisi'))->where('status', 0);
             })->paginate(10);
+            $disposisiFiles = Disposisi::pluck('nomor_surat');
+            $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('file')
+                ->get();
+            // ->pluck('divisi')
+            // ->flatten()
+            // ->unique()
+            // ->implode(', ');
         }
-        return view("arsip.index", ['arsip' => $arsip, 'suratmasuk' => $jumlahFileDivisi3, 'managermasuk' => $filesmasuk, 'staffmasuk' => $filesDisposisiStaff, 'kepalamasuk' => $files]);
+        return view("arsip.index", ['arsip' => $arsip, 'arsipdeputi' => $arsipdeputi, 'suratmasuk' => $jumlahFileDivisi3, 'managermasuk' => $filesmasuk, 'staffmasuk' => $filesDisposisiStaff, 'kepalamasuk' => $files, 'divisi' => $divisiDisposisi, 'disposisiFiles' => $disposisiFiles]);
     }
 
 }

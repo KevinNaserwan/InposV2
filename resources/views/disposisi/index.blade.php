@@ -101,6 +101,27 @@
                                 <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
+                    @elseif (Session('level') == 5)
+                        <li>
+                            <a href="/arsip">
+                                <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/unggah">
+                                <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/konfirmasimasuk">
+                                <i class="bi bi-circle"></i><span>konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li><!-- End Components Nav -->
@@ -144,7 +165,7 @@
                                                 <option value="6">Kesekretariatan</option>
                                                 <option value="7">Pengawas Umum</option>
                                                 <option value="8">Bisnis Jasa Keuangan</option>
-                                                <option value="9">Penjualan, Korporat, Kurir Logistik</option>
+                                                <option value="9">Bisnis Penjualan, Korporat, Kurir Logistik</option>
                                                 <option value="10">Ritel/Kemitraan</option>
                                                 <option value="11" style="font-weight:bold">Semua</option>
                                             </select>
@@ -166,6 +187,23 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    @elseif (Session('level') == 5)
+                                        <form method="POST" action="/disposisiproses/{{ $nomor->nomor_surat }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="row mb-3">
+                                                <label for="inputText" class="col-sm-2 col-form-label">Tujuan
+                                                    Divisi</label>
+                                                <div class="col-sm-10">
+                                                    <select name="divisi" id="divisi" class="form-control">
+                                                        <option disabled selected value>Pilih divisi</option>
+                                                        <option value="2">Pelayanan Outlet & Operasi Cabang</option>
+                                                        <option value="3">Operasi Kurir</option>
+                                                        <option value="4">Solusi Teknologi</option>
+                                                        <option value="5">Keuangan & Aset</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                             @endif
                             <div class="row mb-3">
                                 <label for="inputText" class="col-sm-2 col-form-label">Perihal</label>

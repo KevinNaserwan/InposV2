@@ -30,61 +30,71 @@ Route::post('/loginproses', [AuthController::class, 'loginproses'])->name('login
 
 
 // Route::group(['middleware' => ['auth']], function () {
-    //Route Untuk Logout
-    Route::get('/logout', [AuthController::class, 'logout']);
+//Route Untuk Logout
+Route::get('/logout', [AuthController::class, 'logout']);
 
-    //Admin Start
-    //Route ke Dashboard
-    Route::get('/dashboard', [RouteController::class, 'dashboard'])->name('dashboard');
+//Admin Start
+//Route ke Dashboard
+Route::get('/dashboard', [RouteController::class, 'dashboard'])->name('dashboard');
+Route::post('/createuser', [InposController::class, 'storeuser']);
 
-    //Route ke arsip
-    Route::get('/arsip', [ArsipController::class, 'showarsip']);
+//Route ke arsip
+Route::get('/arsip', [ArsipController::class, 'showarsip']);
 
-    //Route untuk unggah
-    Route::get('/unggah', [RouteController::class, 'unggah']);
-    Route::post('/unggahproses', [InposController::class, 'storefile']);
+//Route untuk unggah
+Route::get('/unggah', [RouteController::class, 'unggah']);
+Route::post('/unggahproses', [InposController::class, 'storefile']);
 
-    //Route untuk konfirmasi
-    Route::get('/konfirmasi/{nomor_surat}', [RouteController::class, 'konfirmasi']);
-    Route::get('/konfirmasimanager/{nomor_surat}', [RouteController::class, 'konfirmasimanager']);
-    Route::post('/konfirmasiproses/{nomor_surat}', [InposController::class, 'storekonfirmasi']);
-    Route::get('/konfirmasikeluar', [RouteController::class, 'konfirmasikeluar']);
-    Route::get('/konfirmasimasuk', [RouteController::class, 'konfirmasimasuk']);
-    Route::get('/konfirmasimanagerkeluar', [RouteController::class, 'konfirmasimanagerkeluar']);
+//Route untuk konfirmasi
+Route::get('/konfirmasi/{nomor_surat}', [RouteController::class, 'konfirmasi']);
+Route::get('/konfirmasimanager/{nomor_surat}', [RouteController::class, 'konfirmasimanager']);
+Route::post('/konfirmasiproses/{nomor_surat}', [InposController::class, 'storekonfirmasi']);
+Route::get('/konfirmasikeluar', [RouteController::class, 'konfirmasikeluar']);
+Route::get('/konfirmasimasuk', [RouteController::class, 'konfirmasimasuk']);
+Route::get('/konfirmasimanagerkeluar', [RouteController::class, 'konfirmasimanagerkeluar']);
 
 
-    //Route ke preview
-    Route::get('/preview/{nama_file}', [PreviewController::class, 'showfile']);
-    Route::get('/previewkeluar/{nama_file}', [PreviewController::class, 'showfilekeluar']);
-    Route::get('/previewkonfirmasi/{nomor_surat}', [PreviewController::class, 'konfirmasidetail']);
-    Route::get('/unduh/{nama_file}', [PreviewController::class, 'unduh']);
+//Route ke preview
+Route::get('/preview/{nama_file}', [PreviewController::class, 'showfile']);
+Route::get('/previewkeluar/{nama_file}', [PreviewController::class, 'showfilekeluar']);
+Route::get('/previewkonfirmasi/{nomor_surat}', [PreviewController::class, 'konfirmasidetail']);
+Route::get('/unduh/{nama_file}', [PreviewController::class, 'unduh']);
 
-    //Route untuk arsip
-    Route::post('/arsipfile/{nama_file}', [PreviewController::class, 'arsipfile']);
+//Route untuk arsip
+Route::post('/arsipfile/{nama_file}', [PreviewController::class, 'arsipfile']);
 
-    //Route untuk disposisi
-    Route::get('/disposisi/{nomor_surat}', [RouteController::class, 'disposisi']);
-    Route::post('/disposisiproses/{nomor_surat}', [InposController::class, 'storedisposisi']);
-    Route::post('/disposisistaff/{nomor_surat}', [InposController::class, 'storedisposisistaff']);
+//Route untuk disposisi
+Route::get('/disposisi/{nomor_surat}', [RouteController::class, 'disposisi']);
+Route::post('/disposisiproses/{nomor_surat}', [InposController::class, 'storedisposisi']);
+Route::post('/disposisistaff/{nomor_surat}', [InposController::class, 'storedisposisistaff']);
 
-    //Route untuk konfirmasi
-    Route::get('/konfirmasi', [RouteController::class, 'konfirmasi']);
-    Route::get('/unduhkonfirmasi/{nama_file}', [PreviewController::class, 'unduhkonfirmasi']);
+//Route untuk konfirmasi
+Route::get('/konfirmasi', [RouteController::class, 'konfirmasi']);
+Route::get('/unduhkonfirmasi/{nama_file}', [PreviewController::class, 'unduhkonfirmasi']);
 
-    //route untuk delete
-    Route::delete('/arsip/delete/{file_pdf}', [InposController::class, 'delete']);
+//route untuk delete
+Route::delete('/arsip/delete/{file_pdf}', [InposController::class, 'delete']);
 
-    //Route outgoing
-    Route::get('/buatsurat', [RouteController::class, 'outgoing']);
-    Route::get('/outgoing-masuk', [RouteController::class, 'outgoing']);
-    Route::get('/outgoingstaff', [RouteController::class, 'outgoingstaff']);
-    Route::get('/outgoing-preview/{nomor_surat}', [RouteController::class, 'hasil']);
-    Route::post('/outgoingprocess', [InposController::class, 'outgoing']);
+//Route outgoing
+Route::get('/buatsurat', [RouteController::class, 'outgoing']);
+Route::get('/outgoing-masuk', [RouteController::class, 'outgoing']);
+Route::get('/outgoingstaff', [RouteController::class, 'outgoingstaff']);
+Route::get('/outgoing-preview/{nomor_surat}', [RouteController::class, 'hasil']);
+Route::post('/outgoingprocess', [InposController::class, 'outgoing']);
 
-    //Route Download outgoing
-    Route::get('/export-pdf/{nomor_surat}', [InposController::class, 'exportpdf']);
-    Route::get('/kirimsurat/{nomor_surat}', [InposController::class, 'kirimsurat']);
-    Route::get('/setujuisurat/{nomor_surat}', [InposController::class, 'setujuisurat']);
+//Route Download outgoing
+Route::get('/export-pdf/{nomor_surat}', [InposController::class, 'exportpdf']);
+Route::get('/kirimsurat/{nomor_surat}', [InposController::class, 'kirimsurat']);
+Route::get('/setujuisurat/{nomor_surat}', [InposController::class, 'setujuisurat']);
+
+//Route List Superadmin
+Route::get('/liststaff', [RouteController::class, 'list']);
+Route::get('/listmanager', [RouteController::class, 'listmanager']);
+Route::get('/listdeputi', [RouteController::class, 'listdeputi']);
+Route::get('/listgm', [RouteController::class, 'listgm']);
+Route::get('/listadmin', [RouteController::class, 'listadmin']);
+Route::get('/edit/{id_pos}', [RouteController::class, 'edituser']);
+route::post('/update/{id_pos}', [RouteController::class, 'update']);
 // });
 
 

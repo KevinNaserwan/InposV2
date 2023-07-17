@@ -101,6 +101,27 @@
                                 <i class="bi bi-circle"></i><span>Outgoing</span>
                             </a>
                         </li>
+                    @elseif (Session('level') == 5)
+                        <li>
+                            <a href="/arsip" class="nav-link">
+                                <i class="bi bi-circle"></i><span>Surat Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/unggah">
+                                <i class="bi bi-circle"></i><span>Surat Keluar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/konfirmasimasuk">
+                                <i class="bi bi-circle"></i><span>Konfirmasi Masuk</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/outgoing-masuk">
+                                <i class="bi bi-circle"></i><span>Outgoing</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </li><!-- End Components Nav -->
@@ -136,9 +157,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nama File</th>
+                                            <th scope="col">Nomor Surat</th>
                                             <th scope="col">Keterangan</th>
-                                            <th scope="col">Pengirim</th>
+                                            <th scope="col">Tujuan</th>
                                             <th scope="col">Aksi</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Tindakan</th>
@@ -168,13 +189,13 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th scope="col">#</th>
-                                                                        <th scope="col">Nama File</th>
+                                                                        <th scope="col">Nomor Surat</th>
                                                                         <th scope="col">Keterangan</th>
                                                                         <th scope="col">Pengirim</th>
                                                                         <th scope="col">Aksi</th>
                                                                         <th scope="col">Tindakan</th>
                                                                     </tr>
-                                                                @elseif (Session('level') == 3)
+                                                                @elseif (Session('level') == 5)
                                                                     <div class="pagetitle">
                                                                         <h1>Tabel Surat Masuk</h1>
                                                                         <nav>
@@ -215,7 +236,7 @@
                                                                                                     <th scope="col">
                                                                                                         Tindakan</th>
                                                                                                 </tr>
-                                                                                            @elseif(Session('level') == 4)
+                                                                                            @elseif(Session('level') == 3)
                                                                                                 <div class="pagetitle">
                                                                                                     <h1>Tabel Surat Masuk
                                                                                                     </h1>
@@ -284,6 +305,81 @@
                                                                                                                                     Tindakan
                                                                                                                                 </th>
                                                                                                                             </tr>
+                                                                                                                        @elseif(Session('level') == 4)
+                                                                                                                            <div
+                                                                                                                                class="pagetitle">
+                                                                                                                                <h1>Tabel
+                                                                                                                                    Surat
+                                                                                                                                    Masuk
+                                                                                                                                </h1>
+                                                                                                                                <nav>
+                                                                                                                                    <ol
+                                                                                                                                        class="breadcrumb">
+                                                                                                                                        <li
+                                                                                                                                            class="breadcrumb-item">
+                                                                                                                                            <a
+                                                                                                                                                href="index.html">Menu</a>
+                                                                                                                                        </li>
+                                                                                                                                        <li
+                                                                                                                                            class="breadcrumb-item active">
+                                                                                                                                            Surat
+                                                                                                                                            Masuk
+                                                                                                                                        </li>
+                                                                                                                                    </ol>
+                                                                                                                                </nav>
+                                                                                                                            </div>
+                                                                                                                            <!-- End Page Title -->
+
+                                                                                                                            <section
+                                                                                                                                class="section">
+                                                                                                                                <div
+                                                                                                                                    class="row">
+                                                                                                                                    <div
+                                                                                                                                        class="col-lg-12">
+
+                                                                                                                                        <div
+                                                                                                                                            class="card">
+                                                                                                                                            <div
+                                                                                                                                                class="card-body">
+                                                                                                                                                <h5
+                                                                                                                                                    class="card-title">
+                                                                                                                                                    Surat
+                                                                                                                                                    Masuk
+                                                                                                                                                </h5>
+                                                                                                                                                {{-- <a href="{{ url('contact-add') }}" class="btn btn-primary mb-2">Add</a> --}}
+
+                                                                                                                                                <!-- Default Table -->
+                                                                                                                                                <table
+                                                                                                                                                    class="table"
+                                                                                                                                                    id="myTable">
+                                                                                                                                                    <thead>
+                                                                                                                                                        <tr>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                #
+                                                                                                                                                            </th>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                Nama
+                                                                                                                                                                File
+                                                                                                                                                            </th>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                Keterangan
+                                                                                                                                                            </th>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                Pengirim
+                                                                                                                                                            </th>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                Aksi
+                                                                                                                                                            </th>
+                                                                                                                                                            <th
+                                                                                                                                                                scope="col">
+                                                                                                                                                                Tindakan
+                                                                                                                                                            </th>
+                                                                                                                                                        </tr>
         @endif
         </thead>
         {{-- <tbody> --}}
@@ -307,9 +403,45 @@
                 @foreach ($arsip as $index => $item)
                     <tr>
                         <th scope="row">{{ $index + $arsip->firstItem() }}</th>
-                        <td>{{ $item->file_pdf }}</td>
+                        <td>
+                            @if ($item->aksi == 0)
+                                {{ $item->nomor_surat }}/KCU-PG
+                            @else
+                                {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                    @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                        @if ($disposisi->divisi == 2)
+                                            Pelayanan Outlet & Operasi Cabang
+                                        @elseif ($disposisi->divisi == 3)
+                                            Operasi Kurir
+                                        @elseif ($disposisi->divisi == 4)
+                                            Solusi Teknologi
+                                        @elseif ($disposisi->divisi == 5)
+                                            Keuangan & Aset
+                                        @elseif ($disposisi->divisi == 6)
+                                            Kesekretariatan
+                                        @elseif ($disposisi->divisi == 7)
+                                            Pengawasan Umum
+                                        @elseif ($disposisi->divisi == 8)
+                                            Bisnis Jasa Keuangan
+                                        @elseif ($disposisi->divisi == 9)
+                                            Bisnis Penjualan, Korporat, Kurir Logistik
+                                        @elseif ($disposisi->divisi == 10)
+                                            Ritel/Kemitraan
+                                        @elseif ($disposisi->divisi == 11)
+                                            Semua
+                                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                        </td>
                         <td>{{ $item->keterangan }}</td>
-                        <td>{{ $item->posisi['jabatan'] }}</td>
+                        <td>
+                            @if ($item->tujuan == 0)
+                                Executive General Manager
+                            @elseif ($item->tujuan == 1)
+                                Deputi Exevutive General Manager
+                            @endif
+                        </td>
                         <td>
                             @if ($item->aksi == 0)
                                 <span class="badge bg-success">Disimpan</span>
@@ -347,7 +479,89 @@
                 @foreach ($kepalamasuk as $index => $item)
                     <tr>
                         <th scope="row">{{ $index + $kepalamasuk->firstItem() }}</th>
-                        <td>{{ $item->file_pdf }}</td>
+                        <td>
+                            @if ($item->aksi == 0)
+                                {{ $item->nomor_surat }}/KCU-PG
+                            @else
+                                {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                    @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                        @if ($disposisi->divisi == 2)
+                                            Pelayanan Outlet & Operasi Cabang
+                                        @elseif ($disposisi->divisi == 3)
+                                            Operasi Kurir
+                                        @elseif ($disposisi->divisi == 4)
+                                            Solusi Teknologi
+                                        @elseif ($disposisi->divisi == 5)
+                                            Keuangan & Aset
+                                        @elseif ($disposisi->divisi == 6)
+                                            Kesekretariatan
+                                        @elseif ($disposisi->divisi == 7)
+                                            Pengawasan Umum
+                                        @elseif ($disposisi->divisi == 8)
+                                            Bisnis Jasa Keuangan
+                                        @elseif ($disposisi->divisi == 9)
+                                            Bisnis Penjualan, Korporat, Kurir Logistik
+                                        @elseif ($disposisi->divisi == 10)
+                                            Ritel/Kemitraan
+                                        @elseif ($disposisi->divisi == 11)
+                                            Semua
+                                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                        </td>
+                        <td>{{ $item->keterangan }}</td>
+                        <td>{{ $item->posisi['jabatan'] }}</td>
+                        <td>
+                            @if ($item->aksi == 0)
+                                <span class="badge bg-success">Disimpan</span>
+                            @elseif ($item->aksi == 1)
+                                <span class="badge bg-warning">Disposisi</span>
+                            @elseif ($item->aksi == 2)
+                                <span class="badge bg-primary">Diarsipkan</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="/preview/{{ $item->nama_file }}"
+                                id="delete">Buka</a>
+                        </td>
+                    </tr>
+                @endforeach
+            @elseif (Session('level') == 5)
+                @foreach ($arsipdeputi as $index => $item)
+                    <tr>
+                        <th scope="row">{{ $index + $kepalamasuk->firstItem() }}</th>
+                        <td>
+                            @if ($item->aksi == 0)
+                                {{ $item->nomor_surat }}/KCU-PG
+                            @else
+                                {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                    @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                        @if ($disposisi->divisi == 2)
+                                            Pelayanan Outlet & Operasi Cabang
+                                        @elseif ($disposisi->divisi == 3)
+                                            Operasi Kurir
+                                        @elseif ($disposisi->divisi == 4)
+                                            Solusi Teknologi
+                                        @elseif ($disposisi->divisi == 5)
+                                            Keuangan & Aset
+                                        @elseif ($disposisi->divisi == 6)
+                                            Kesekretariatan
+                                        @elseif ($disposisi->divisi == 7)
+                                            Pengawasan Umum
+                                        @elseif ($disposisi->divisi == 8)
+                                            Bisnis Jasa Keuangan
+                                        @elseif ($disposisi->divisi == 9)
+                                            Bisnis Penjualan, Korporat, Kurir Logistik
+                                        @elseif ($disposisi->divisi == 10)
+                                            Ritel/Kemitraan
+                                        @elseif ($disposisi->divisi == 11)
+                                            Semua
+                                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                        </td>
                         <td>{{ $item->keterangan }}</td>
                         <td>{{ $item->posisi['jabatan'] }}</td>
                         <td>
@@ -370,7 +584,7 @@
                     {{-- @if ($item->aksi == 0) --}}
                     <tr>
                         <th scope="row">{{ $index + $managermasuk->firstItem() }}</th>
-                        <td>{{ $item->file_pdf }}</td>
+                        <td>{{ $item->nomor_surat }}/KCU-PG</td>
                         <td>{{ $item->keterangan }}</td>
                         <td>General Manager</td>
                         <td>
@@ -393,7 +607,7 @@
                     {{-- @if ($item->aksi == 0) --}}
                     <tr>
                         <th scope="row">{{ $index + $staffmasuk->firstItem() }}</th>
-                        <td>{{ $item->file_pdf }}</td>
+                        <td>{{ $item->nomor_surat }}/KCU-PG</td>
                         <td>{{ $item->keterangan }}</td>
                         <td>General Manager</td>
                         <td>
@@ -422,7 +636,10 @@
             {{ $managermasuk->links() }}
         @elseif (Session('level') == 4)
             {{ $staffmasuk->links() }}
+        @elseif (Session('level') == 5)
+            {{ $arsipdeputi->links() }}
         @endif
+
         <!-- End Default Table Example -->
         </div>
         </div>

@@ -131,7 +131,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Nama File</th>
+                                        <th scope="col">Nomor Surat</th>
                                         <th scope="col">Keterangan</th>
                                         <th scope="col">Pengirim</th>
                                         <th scope="col">Aksi</th>
@@ -159,9 +159,35 @@
                                     @foreach ($konfirmasistaff as $index => $item)
                                         <tr>
                                             <th scope="row">{{ $index + $konfirmasistaff->firstItem() }}</th>
-                                            <td>{{ $item->nomor_surat }}</td>
-                                            <td>{{ $item->nama_file }}</td>
+                                            <td>
+                                                {{ $item->nomor_surat }}/KCU-PG/@foreach ($divisi as $disposisi)
+                                                    @if ($disposisi->nomor_surat == $item->nomor_surat)
+                                                        @if ($disposisi->divisi == 2)
+                                                            Pelayanan Outlet & Operasi Cabang
+                                                        @elseif ($disposisi->divisi == 3)
+                                                            Operasi Kurir
+                                                        @elseif ($disposisi->divisi == 4)
+                                                            Solusi Teknologi
+                                                        @elseif ($disposisi->divisi == 5)
+                                                            Keuangan & Aset
+                                                        @elseif ($disposisi->divisi == 6)
+                                                            Kesekretariatan
+                                                        @elseif ($disposisi->divisi == 7)
+                                                            Pengawasan Umum
+                                                        @elseif ($disposisi->divisi == 8)
+                                                            Bisnis Jasa Keuangan
+                                                        @elseif ($disposisi->divisi == 9)
+                                                            Bisnis Penjualan, Korporat, Kurir Logistik
+                                                        @elseif ($disposisi->divisi == 10)
+                                                            Ritel/Kemitraan
+                                                        @elseif ($disposisi->divisi == 11)
+                                                            Semua
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            </td>
                                             <td>{{ $item->keterangan }}</td>
+                                            <td>{{ $item->posisi['jabatan'] }}</td>
                                             <td>
                                                 @if ($item->aksi == 0)
                                                     <span class="badge bg-success">Disimpan</span>
