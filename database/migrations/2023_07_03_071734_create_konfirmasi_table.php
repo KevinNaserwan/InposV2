@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('nama_file', 50)->nullable();
             $table->string('nomor_surat', 50);
             $table->string('keterangan', 255)->nullable();
+            $table->string('id_pos', 20);
             $table->foreign('nomor_surat')->references('nomor_surat')->on('file');
+            $table->foreign('id_pos')->references('id_pos')->on('user');
         });
     }
 

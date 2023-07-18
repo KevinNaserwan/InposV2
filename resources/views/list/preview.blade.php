@@ -6,7 +6,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
             @if (Session('level') == 0)
                 <li class="nav-item">
-                    <a class="nav-link " href="/dashboard">
+                    <a class="nav-link collapsed" href="/dashboard">
                         <i class="bi bi-grid"></i>
                         <span>Create User</span>
                     </a>
@@ -20,7 +20,7 @@
                 </li><!-- End Dashboard Nav -->
             @endif
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-menu-button-wide"></i><span>Menu List</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
@@ -31,22 +31,22 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/outgoing-masuk">
+                            <a href="/listmanager">
                                 <i class="bi bi-circle"></i><span>List Manager</span>
                             </a>
                         </li>
                         <li>
-                            <a href="/outgoing-masuk">
+                            <a href="/listgm">
                                 <i class="bi bi-circle"></i><span>List EGM</span>
                             </a>
                         </li>
                         <li>
-                            <a href="/outgoing-masuk">
+                            <a href="/listdeputi">
                                 <i class="bi bi-circle"></i><span>List Deputi EGM</span>
                             </a>
                         </li>
                         <li>
-                            <a href="/outgoing-masuk">
+                            <a href="/listadmin">
                                 <i class="bi bi-circle"></i><span>List Admin</span>
                             </a>
                         </li>
@@ -183,8 +183,8 @@
                                 <div class="row mb-3">
                                     <label for="inputText" class="col-sm-2 col-form-label">Nama</label>
                                     <div class="col-sm-10">
-                                        <input type="text" value={{ $user->nama }} name="nama"
-                                            class="form-control" id="nama">
+                                        <input type="text" value={{ $user->nama }} name="nama" class="form-control"
+                                            id="nama">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -233,22 +233,12 @@
                                     <label class="col-sm-2 col-form-label"></label>
                                     <form action="/update/{{ $user->id_pos }}" method="POST" style="display: inline">
                                         @csrf
-                                        <button class="btn btn-primary">Update User</button>
+                                        <button class="btn btn-primary col-lg-3 ml-2">Update User</button>
                                     </form>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    {{-- @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $item)
-                                <li>{{ $item }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif --}}
-
                 </div>
             </div>
         </section>

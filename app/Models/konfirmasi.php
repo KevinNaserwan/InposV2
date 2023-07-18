@@ -11,7 +11,7 @@ class konfirmasi extends Model
 
     protected $table = 'konfirmasi';
 
-    protected $fillable = ['id_konfirmasi', 'nama_file', 'nomor_surat', 'keterangan'];
+    protected $fillable = ['id_konfirmasi', 'nama_file', 'nomor_surat', 'keterangan','id_pos'];
     public $timestamps = false;
 
     public function konfirmasi()

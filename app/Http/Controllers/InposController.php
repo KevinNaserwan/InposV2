@@ -139,7 +139,8 @@ class InposController extends Controller
         $data = [
             'nomor_surat' => $nomor_surat,
             'nama_file' => $foto_nama,
-            'keterangan' => $request->input('keterangan')
+            'keterangan' => $request->input('keterangan'),
+            'id_pos' => Session('id_pos')
         ];
         // dd($data);
         konfirmasi::create($data);

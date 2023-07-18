@@ -11,12 +11,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class RouteController extends Controller
+class AlurController extends Controller
 {
     public function dashboard()
     {
         $arsip = Files::paginate(10);
         $suratkepala = Files::where('aksi', 0)->count();
+        $suratdeputi = Files::where('aksi', 0)->where('tujuan', 1)->count();
         $suratkepalatoday = Files::whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $suratmanagertoday = Files::whereHas('disposisi', function ($query) {
             $query->where('divisi', Session('divisi'));
@@ -25,10 +26,14 @@ class RouteController extends Controller
             $query->where('id_pos', Session('id_pos'))->where('divisi', Session('divisi'));
         })->whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $disposisikepala = Files::where('aksi', 1)->count();
+        $disposisideputi = Files::where('aksi', 1)->where('tujuan', 1)->count();
         $files = Files::whereDate('tanggal', now()->format('Y-m-d'))->paginate(10);
         $menunggukepala = Files::whereHas('disposisi', function ($query) {
             $query->where('status', 0);
         })->count();
+        $menunggudeputi = Files::whereHas('disposisi', function ($query) {
+            $query->where('status', 0);
+        })->where('tujuan', 1)->count();
         // $jumlahFileDivisi3 = Files::whereHas('disposisi', function ($query) {
         //     $query->where('divisi', Session('divisi'));
         // })->count();
@@ -51,11 +56,21 @@ class RouteController extends Controller
             ->select('file.*')
             ->count();
 
+        $fileskonfirmasideputi = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
+            ->where('file.aksi', 2)
+            ->where('file.tujuan', 1)
+            ->select('file.*')
+            ->count();
+
         $fileskonfirmasimanager = Files::join('konfirmasi', 'konfirmasi.nomor_surat', '=', 'file.nomor_surat')
             ->join('disposisi', 'konfirmasi.nomor_surat', '=', 'disposisi.nomor_surat')
             ->where('disposisi.divisi', Session('divisi'))
             ->select('file.*')
             ->count();
+        $disposisiFiles = Disposisi::pluck('nomor_surat');
+        $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+            ->whereHas('file')
+            ->get();
 
         // $menunggumanager = Files::whereHas('disposisiStaff', function ($query) {
         //     $query->where('divisi', Session('divisi'))->where('status', 0);
@@ -63,7 +78,9 @@ class RouteController extends Controller
         // dd($suratkepalatoday);
         return view("dashboard.index", [
             'konfirmasikepala' => $suratkepala,
+            'konfirmasideputi' => $suratdeputi,
             'disposisikepala' => $disposisikepala,
+            'disposisideputi' => $disposisideputi,
             'files' => $files,
             // 'filesDisposisi' => $jumlahFileDivisi3,
             'suratmanager' => $suratmanager,
@@ -71,12 +88,15 @@ class RouteController extends Controller
             'filesDisposisiStaff' => $filesDisposisiStaff,
             'arsip' => $arsip,
             'menunggukepala' => $menunggukepala,
+            'menunggudeputi' => $menunggudeputi,
             'konfirmasistaff' => $fileskonfirmasiStaff,
             'suratkepalatoday' => $suratkepalatoday,
             'suratmanagertoday' => $suratmanagertoday,
             'suratstafftoday' => $suratstafftoday,
             'countkonfirmkepala' => $fileskonfirmasikepala,
-            'countkonfirmmanager' => $fileskonfirmasimanager
+            'countkonfirmmanager' => $fileskonfirmasimanager,
+            'countkonfirmdeputi' => $fileskonfirmasideputi,
+            'divisi' => $divisiDisposisi
         ]);
     }
 
@@ -172,8 +192,12 @@ class RouteController extends Controller
                 ->where('disposisistaff.id_pos', Session('id_pos'))
                 ->select('file.*')
                 ->paginate(10);
+            $disposisiFiles = Disposisi::pluck('nomor_surat');
+            $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('file')
+                ->get();
         }
-        return view('konfirmasi.index', ['konfirmasistaff' => $files]);
+        return view('konfirmasi.index', ['konfirmasistaff' => $files, 'divisi' => $divisiDisposisi]);
     }
 
     function konfirmasimanagerkeluar(Request $request)
@@ -245,8 +269,18 @@ class RouteController extends Controller
                 ->where('file.aksi', 2)
                 ->select('file.*')
                 ->paginate(10);
+            $disposisiFiles = Disposisi::pluck('nomor_surat');
+            $divisiDisposisi = Disposisi::whereIn('nomor_surat', $disposisiFiles)
+                ->whereHas('file')
+                ->get();
+            $userIds = konfirmasi::pluck('id_pos');
+            $users = User::whereIn('id_pos', $userIds)
+                ->first();
+            // ->flatten()
+            // ->unique()
+            // ->implode(', ');
         }
-        return view('konfirmasi.index', ['konfirmasimanager' => $files, 'konfirmasikepala' => $fileskonfirmasikepala, 'pengirim' => $pengirim]);
+        return view('konfirmasi.index', ['user' => $users, 'konfirmasimanager' => $files, 'konfirmasikepala' => $fileskonfirmasikepala, 'pengirim' => $pengirim, 'divisi' => $divisiDisposisi]);
     }
 
     public function outgoing(Request $request)
@@ -334,6 +368,5 @@ class RouteController extends Controller
         $user->update($request->all());
         // dd($user);
         return view('list.preview')->with('success', 'Berhasil Mengedit User');
-
     }
 }
