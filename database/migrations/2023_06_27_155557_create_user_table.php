@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama', 50)->nullable();
             $table->string('jabatan', 50)->nullable();
             $table->string('password', 255);
-            $table->integer('divisi');
             $table->integer('level')->nullable();
+            $table->integer('divisi')->nullable();
         });
     }
 
