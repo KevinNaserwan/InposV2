@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('id_pos', 20);
             $table->string('file_pdf', 255)->nullable();
             $table->string('keterangan', 255)->nullable();
+            $table->integer('aksi');
+            $table->integer('status');
+            $table->integer('tujuan');
             $table->foreign('id_pos')->references('id_pos')->on('user');
         });
     }
